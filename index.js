@@ -1,4 +1,5 @@
 const express = require('express');
+const data = require('./products.json');
 const app = express(); //usando constante de express
 const port = 3000;
 
@@ -16,6 +17,10 @@ app.get('/home', (request, response) => {
   console.log(request.url);
 })
 
+app.get('/products', (request, response) => {
+  response.json(data);
+})
+
 app.listen(port, function(){
-  console.log(`Escuchando en: 127.0.0.1:${port}/`);
+  console.log(`Escuchando en: localhost:${port}/`);
 });
