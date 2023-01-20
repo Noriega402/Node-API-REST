@@ -1,4 +1,5 @@
 const express = require('express');
+const faker = require('faker');
 const data = require('./products.json');
 const app = express(); //usando constante de express
 const port = 3000;
@@ -19,14 +20,39 @@ app.get('/home/:email/:name/:surname', (request, response) => {
 })
 
 app.get('/products', (request, response) => {
-  response.json(data);
+  const  products = [];
+  const { size } = request.query;
+  const limit = size || 10;
+  for(let i = 0; i < limit; i++){
+    products.push({
+      name: faker.commerce.product(),
+      price: parseFloat(faker.commerce.price()),
+      img: faker.image.image(),
+    });
+  }
+  response.json(products);
+  // response.json(data);
 })
 
-app.get('/products/:id', (request, response) => {
+app.get('/products/:id', (request, response) => { //recibe parametros
   const { id } = request.params;
   response.json({
     id,
   });
+})
+
+app.get('/users', (request, response) => { //recibe querys
+  const { limit , offset} = request.query;
+  if(limit && offset){
+
+    response.json({
+      limit,
+      offset,
+    });
+
+  }else{
+    response.send('No hay querys...');
+  }
 })
 
 app.get('/category/:categoryId/products/:productId', (request, response) => {
