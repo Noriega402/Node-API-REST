@@ -3,6 +3,9 @@ const routerApi = require('./routes');
 const app = express(); //usando constante de express
 const port = 3000;
 
+
+app.use(express.json());
+
 // definiendo rutas
 app.get('/', (request, response) => { //request = peticion  response = respuesta
   response.writeHead(200,{'Content-Type':'text/html'});
