@@ -21,7 +21,7 @@ router.get('/', (request, response) => { //recibe querys
     }
     response.json(test);
   }else{
-    response.send('nah');
+    response.json(data);
   }
 });
 
