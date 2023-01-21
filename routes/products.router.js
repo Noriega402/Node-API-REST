@@ -1,5 +1,5 @@
 const express = require('express');
-const data = require('../examples/products.json');
+let data = require('../examples/products.json');
 const router = express.Router();
 
 router.get('/', (request, response) => {
@@ -65,10 +65,18 @@ router.get('/:id/:user' , (request, response) => {
 
 router.post('/', (request, response) => {
   const body = request.body;
-  response.json({
-    "message": "created successfuly",
-    "data": body
-  });
+  const ids = data.map(datos => datos.id); //obtener los ids de los productos
+  const maxId = Math.max(...ids); // verificar el id mayor
+
+  const newProduct = {
+    id: maxId + 1,
+    products: body.products,
+    price: body.price,
+    description: body.description,
+  }
+
+  data = [...data, newProduct];
+  response.json(newProduct);
 });
 
 module.exports = router;
