@@ -9,5 +9,6 @@ router.get('/:categoryId/:productId', controller.example);
 
 
 router.post('/', controller.newProduct);
+// router.delete('/:id', controller);
 
 module.exports = router;

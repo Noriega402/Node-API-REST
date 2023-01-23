@@ -49,7 +49,33 @@ controller.newUser = (request, response) => {
   }
 
   data = [...data, newUser];
-  response.json(newUser);
+  response.status(201).json(newUser);
+}
+
+controller.deleteUser = (request, response) => {
+  const id = Number(request.params.id);
+  const find = data.filter(item => item.id === id);
+  // console.log(find.length);
+  if(find.length !== 0){
+    data = data.filter(user => user.id !== id);
+    response.json(data);
+  }else{
+    response.status(404).json({ message: "404 Not Found"}).end();
+  }
+}
+
+controller.update = (request, response) => {
+  const id = Number(request.params.id);
+  const body = request.body;
+  const index = data.findIndex(item => item.id === id);
+
+  if(index !== -1){
+    const user = data[index];
+    data[index] = {...user, ...body };
+    response.status(202).json(data[index]);
+  }else{
+    response.status(404).json({ message : "404 Not Found" }).end();
+  }
 }
 
 module.exports = controller;
