@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/products.controller');
 const validations = require('../schemas/product.schemas');
+const controller = require('../controllers/products.controller');
 
 router.get('/', controller.getProducts);
 router.get('/pagination', controller.getPagination);
