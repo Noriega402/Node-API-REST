@@ -1,5 +1,4 @@
 const root = { root: "C:\\Users\\HP INTEL\\Documents\\Cursos Platzi\\Node-API-REST\\public"};
-const { request } = require('express');
 let data = require('../examples/products.json');
 const controller = {};
 
