@@ -1,5 +1,7 @@
 # Node-API-REST
 - [Creando servidor con Express](#express)
+- [URL´s para peticiones http](#metodos)
+
 <h2 id="express">Creando mi primer servidor con Express</h2>
 
 Para poder crear tu primer servidor con express debes tener instalado Node JS en tu ordenador.
@@ -99,3 +101,29 @@ Aparecera un mensaje como este:
   <img src="./imgs/url-express.PNG">
 </div>
 Y listo tenemos nuestro primer servido con _Express_
+
+<h2 id="metodos">URL´s para peticiones HTTP</h2>
+<h3 id="usuarios">Usuarios</h3>
+
+- [GET](#get)
+- [GET + PARAMETROS](#get-params)
+- [GET + PAGINACION](#get-pagination)
+- [POST](#post)
+- [UPDATE](#update)
+- [DELETE](#delete)
+
+
+Para poder obtener todos los datos de la API:
+<pre id="get">localhost:3000/api/v1/users</pre>
+
+Para poder buscar un usuario en especifico
+<pre id="get-params">localhost:3000/api/v1/users/ID_USUARIO</pre>
+
+Para poder crear un usuario nuevo
+<pre id="post">localhost:3000/api/v1/users</pre>
+
+Para actulizar un usuario:
+<pre id="post">localhost:3000/api/v1/users/ID_USUARIO</pre>
+
+Para eliminar un usuario:
+<pre id="delete">localhost:3000/api/v1/users/ID_USUARIO</pre>
