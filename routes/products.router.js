@@ -5,10 +5,8 @@ const controller = require('../controllers/products.controller');
 router.get('/', controller.getProducts);
 router.get('/pagination', controller.getPagination);
 router.get('/:id', controller.findProduct);
-router.get('/:categoryId/:productId', controller.example);
-
-
 router.post('/', controller.newProduct);
-// router.delete('/:id', controller);
+router.patch('/:id', controller.update);
+router.delete('/:id', controller.delete);
 
 module.exports = router;
