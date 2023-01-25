@@ -4,7 +4,6 @@ function validate(validation){
   return (request, response, next) => {
     try {
       validation(request.body);
-      // console.log(request.body);
       next();
     } catch (error) {
       next(error);
@@ -14,9 +13,12 @@ function validate(validation){
 }
 
 function createProductValidation(data){
+  const regexProduct = /^[a-zA-Z]+$/gi;
+  const regexPrice = /\$[0-9]+\.[0-9]+/gi;
+
   const schema = yup.object().shape({
-    products: yup.string().min(3, "El producto debe tener mas de 3 caracteres").required("Es necesario ingresar un producto"),
-    price: yup.string().required(),
+    product: yup.string().min(3, "El producto debe tener mas de 3 caracteres").matches(regexProduct).required("Es necesario ingresar un producto"),
+    price: yup.string().matches(regexPrice).required(),
     description: yup.string().min(10).required(),
   });
 
