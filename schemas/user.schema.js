@@ -9,7 +9,6 @@ function validate(validation){
     } catch (error) {
       next(error);
       console.log(error.message);
-      console.log(errors.name);
     }
   }
 }
@@ -37,10 +36,11 @@ function createUserValidation(data) {
           .string()
           .matches(regexMail, errors.emailRegex)
           .required(errors.required),
-    direction: yup.string(),
+    direction: yup.string(errors.direction),
     credit_card: yup
                 .string()
-                .min(16)
+                .min(16, errors.card)
+                .max(16, errors.card)
                 .matches(regexCard),
   });
 
