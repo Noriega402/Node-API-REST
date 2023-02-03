@@ -1,6 +1,7 @@
-let data = require('../examples/users.json');
-const root = { root: "C:\\Users\\HP INTEL\\Documents\\Cursos Platzi\\Node-API-REST\\public"};
+const path = require('path');
+const bcrypt = require('bcrypt');
 const controller = {};
+let data = require('../examples/users.json');
 
 controller.getUsers = (request, response) => { //recibe querys
   const { size } = request.query;
@@ -15,7 +16,7 @@ controller.getUsers = (request, response) => { //recibe querys
         user_name: data[i].user_name,
         email: data[i].email,
         direction: data[i].direction,
-        credit_card: data[i].credit_card,
+        password: data[i].password,
       });
     }
     response.json(test);
@@ -30,14 +31,15 @@ controller.findUser = (request, response, next) => {
     if (search) {
       response.json(search);
     }else{
-      response.status(404).sendFile('/404.html', root);
+      response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
     }
 }
 
-controller.newUser = (request, response) => {
+controller.newUser = async (request, response) => {
   const body = request.body;
   const ids = data.map(datos => datos.id);
   const maxId = Math.max(...ids);
+  const passHash = await bcrypt.hash(body.password,10); //hash de encriptacion
 
   const newUser = {
     id: maxId + 1,
@@ -46,7 +48,7 @@ controller.newUser = (request, response) => {
     user_name: body.user_name,
     email: body.email,
     direction: body.direction,
-    credit_card: body.credit_card,
+    password: passHash
   }
 
   data = [...data, newUser];
@@ -61,21 +63,32 @@ controller.deleteUser = (request, response) => {
     data = data.filter(user => user.id !== id); //filtrar usuarios sin ese ID
     response.json(data);
   } else {
-    response.status(404).sendFile("/404.html", root);
+    response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
   }
 }
 
-controller.update = (request, response) => {
+controller.update = async (request, response) => {
   const id = Number(request.params.id);
   const body = request.body;
   const index = data.findIndex(item => item.id === id);
+  let user;
 
+  console.log(body.password);
   if (index !== -1) {
-    const user = data[index];
-    data[index] = { ...user, ...body };
+
+    if(body.password !== undefined){
+      const passHash = await bcrypt.hash(body.password, 10);
+      const dataUpdate = {...body, password: passHash};
+      user = data[index];
+      data[index] = {...user, ...dataUpdate};
+    }else{
+      user = data[index];
+      data[index] = {...user, ...body};
+    }
+
     response.status(202).json(data[index]);
   } else {
-    response.status(404).sendFile("/404.html", root);
+    response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
   }
 }
 

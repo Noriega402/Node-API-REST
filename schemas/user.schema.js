@@ -4,6 +4,7 @@ const regexNames = /^[a-zA-Z]+$/gi;
 const regexMail = /^[a-zA-z0-9_.]+@[a-zA-Z0-9-_]+\.[a-zA-Z]{2,4}/gi;
 const regexUserName = /^[a-zA-Z0-9-_]+/gi;
 const regexCard = /^[0-9]+$/gi;
+const regexPassword = /^[a-zA-z0-9$%&#!]{8,15}$/gm;
 
 function validate(validation, property) {
   return (request, response, next) => {
@@ -37,6 +38,10 @@ function createUserValidation(data) {
       .matches(regexMail, errors.emailRegex)
       .required(errors.required),
     direction: yup.string(errors.direction),
+    password: yup
+      .string()
+      .matches(regexPassword, "Debe de tener minimo 8 caracteres (simbolos y letras)")
+      .required(errors.required),
     credit_card: yup
       .string()
       .min(16, errors.card)

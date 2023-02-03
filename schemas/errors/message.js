@@ -16,6 +16,7 @@ errors.productRegex = "El nombre del producto solo debe llevar letras";
 errors.emailRegex = "El email no cumple con los requerimientos";
 errors.direction = "Tu direccion debe tener caracteres validos";
 errors.card = "La tarjeta de debito debe tener 16 digitos";
+errors.password = "La contraseña debe tener minimo 8 caracteres";
 errors.number = "Debe de ser un numero";
 errors.integer = "Debe ser un entero";
 errors.required = "El campo no puede quedar vacio";
