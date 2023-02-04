@@ -1,15 +1,16 @@
+let data = require('../examples/users.json');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const controller = {};
-let data = require('../examples/users.json');
 
 controller.getUsers = (request, response) => { //recibe querys
   const { size } = request.query;
-  const test = [];
+  const datos = [];
   const limit = size || 10;
+
   if (size) {
     for (let i = 0; i < limit; i++) {
-      test.push({
+      datos.push({
         id: data[i].id,
         first_name: data[i].first_name,
         last_name: data[i].last_name,
@@ -19,9 +20,20 @@ controller.getUsers = (request, response) => { //recibe querys
         password: data[i].password,
       });
     }
-    response.json(test);
-  } else {
-    response.json(data);
+    response.json(datos);
+  }else {
+    for (let i = 0; i < data.length; i++) {
+      datos.push({
+        id: data[i].id,
+        first_name: data[i].first_name,
+        last_name: data[i].last_name,
+        user_name: data[i].user_name,
+        email: data[i].email,
+        direction: data[i].direction,
+        password: data[i].password,
+      });
+    }
+    response.json(datos);
   }
 }
 
@@ -88,6 +100,18 @@ controller.update = async (request, response) => {
 
     response.status(202).json(data[index]);
   } else {
+    response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
+  }
+}
+
+controller.compare = async(request, response) => {
+  const { username, password } = request.params;
+  const index = data.findIndex(user => user.user_name == username);
+  if(index !== -1){
+    const compare = await bcrypt.compare(password, data[index].password);
+    compare ? response.status(200).json(data[index]).end()
+            : response.status(202).json({error: "error de credenciales"});
+  }else{
     response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
   }
 }

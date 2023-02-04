@@ -20,6 +20,6 @@ app.use(express.static(path.join(__dirname, '/public'))); //ruta estatica
 
 routerApi(app);
 
-app.listen(PORT, function(){
+app.listen(process.env.PORT || PORT, function(){
   console.log(`Escuchando en: localhost:${PORT}/`);
 });

@@ -1,19 +1,30 @@
 [
   {
+    "id": 1,
+    "first_name": "Carlos",
+    "last_name": "Sepulveda",
+    "user_name": "cpulveda",
+    "email": "cpulveda@gmail.com",
+    "direction": "Ciudad de Guatemala",
+    "password": "$2b$10$5E89miwI7Ir2SUP6WJcy1eLf1aYnw5ku2JozwCXKkmT4TZoXeNahK",
+    "sinHash": "El password es carlos123"
+  },
+  {
     "id": 2,
     "first_name": "Melany",
     "last_name": "Salazar",
     "user_name": "msalazar23",
     "email": "msalazar23@gmail.com",
     "direction": "El sacramento, palin",
-    "password":"$2b$10$3bBpVyq88eGRHtrDf/ghvOFBrzqGiBlz7NZy172meIQ2lateLswKq"
+    "password":"$2b$10$awOcw7Vcck7DV6Hgs/Ud2.H97nbX1nA0rpWj4pn.RGUb3rlTfstwC",
+    "sinHash": "El password es melany123$"
   },
   {
     "id": 3,
     "first_name": "Bill",
     "last_name": "Simonis",
-    "user_name": "Walter.Boehm",
-    "email": "Nadia44@hotmail.com",
+    "user_name": "bsimonis",
+    "email": "bsimonis@hotmail.com",
     "direction": "East",
     "password": "$2b$10$aeqLMGJl9pE/s3JjVqQ9CuiK2LJvAV8fYK2x5n6sGiLBtDk6E8.m6"
   }
