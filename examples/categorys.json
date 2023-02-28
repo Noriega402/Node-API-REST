@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "category": "Finance"
+    },
+    {
+        "id": 2,
+        "category": "Basic Industries"
+    },
+    {
+        "id": 3,
+        "category": "Technology"
+    },
+    {
+        "id": 4,
+        "category": "Electrical Appliances"
+    },
+    {
+        "id": 5,
+        "category": "Automotive"
+    },
+    {
+        "id": 6,
+        "category": "Food"
+    },
+    {
+        "id": 7,
+        "category": "Entertainment"
+    }
+]
