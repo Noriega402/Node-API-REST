@@ -10,14 +10,6 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, '/public'))); //ruta estatica
 
-// definiendo rutas
-// app.get('/', (request, response) => { //request = peticion  response = respuesta
-//   response.writeHead(200,{'Content-Type':'text/html'});
-//   response.write("<h1>Primer servidor con Express</h1>");
-//   console.log(request.url);
-//   console.log(path.join(__dirname,'\public'));
-// });
-
 routerApi(app);
 
 app.listen(process.env.PORT || PORT, function(){
