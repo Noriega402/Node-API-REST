@@ -39,12 +39,11 @@ controller.getUsers = (request, response) => { //recibe querys
 
 controller.findUser = (request, response, next) => {
     const id = Number(request.params.id);
-    const search = data.find(user => user.id == id);
-    if (search) {
-      response.json(search);
-    }else{
-      response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
-    }
+    const search = data.find(user => user.id === id);
+
+    search
+      ? response.json(search)
+      : response.status(404).sendFile(path.join(__dirname,'../public/404.html'))
 }
 
 controller.newUser = async (request, response) => {
@@ -72,7 +71,7 @@ controller.deleteUser = (request, response) => {
   const find = data.filter(item => item.id === id);
   // console.log(find.length);
   if (find.length !== 0) {
-    data = data.filter(user => user.id !== id); //filtrar usuarios sin ese ID
+    data = data.filter(user => user.id !== id); //modificar el json (elimina el usuario que se encontro con el ID)
     response.json(data);
   } else {
     response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
@@ -85,7 +84,7 @@ controller.update = async (request, response) => {
   const index = data.findIndex(item => item.id === id);
   let user;
 
-  console.log(body.password);
+  // console.log(body.password);
   if (index !== -1) {
 
     if(body.password !== undefined){
