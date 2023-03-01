@@ -31,6 +31,10 @@ function createProductValidation(data) {
       .string()
       .min(10, errors.productDescription)
       .required(errors.required),
+    image: yup
+    .string()
+    .url()
+    .required(errors.required),
   });
 
   schema.validateSync(data);
