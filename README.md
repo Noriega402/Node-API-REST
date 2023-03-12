@@ -1,6 +1,7 @@
 # Node-API-REST
 - [Creando servidor con Express](#express)
 - [URL´s para peticiones http](#metodos)
+- [Iniciar con Docker compose](#pasos-para-iniciar)
 
 <h2 id="express">Creando mi primer servidor con Express</h2>
 
@@ -127,3 +128,161 @@ Para actulizar un usuario:
 
 Para eliminar un usuario:
 <pre id="delete">localhost:3000/api/v1/users/ID_USUARIO</pre>
+
+
+## Pasos para iniciar
+Crear el archivo de docker-compose
+```bash
+touch docker-compose.yml
+```
+
+Abrimos VS Code
+```bash
+code .
+```
+
+Colocamos dentro del archivo de docker-compose lo siguiente para administrarlo sin necesidad de instalar drivers o aplicaciones de mas
+
+```bash
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=store
+      - POSTGRES_USER=noriega
+      - POSTGRES_PASSWORD=server2023$
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+```
+
+## Crear contenedor con docker-compose
+Luego de tener tu configuracion realizaremos lo siguiente dentro de la linea de comandos (terminal):
+
+```bash
+docker-compose up -d postgres
+```
+
+__NOTA:__ postgres es porque ese el nombre del servicio en caso pusieras otro lo cambias
+
+Verificaremos si esta corriendo el contenedor
+
+```bash
+docker-compose -ps
+```
+
+Para parar el contenedor hacemos lo siguiente
+
+```bash
+docker-compose down
+```
+
+## Explorando terminal e interfaz de postgres
+Primero lo veremos desde la terminal y usaremos el siguiente comando:
+
+```bash
+docker-compose exec postgres bash
+```
+
+Nos conectara a la base de datos vía terminal
+
+Para navegar dentro de ella:
+```bash
+ls -l
+```
+
+### Conectarse a la base de datos por terminal
+Colocaremos esto una vez estemos dentro del contenedro de postgres
+
+```bash
+psql -h localhost -d store -U noriega
+```
+
+__NOTA:__ -h es para indicar el host, -d para indicar la base de datos y -U es para indicar el nombre de usuario
+
+### Conectarse por medio de PGAdmin4
+
+En caso no nos sintamos muy comodos utilizando la base de datos por medio de la terminal podemos hacerlo por medio de PGAdmin4, pero tendremos que realizar unas configuraciones mas a al archivo de _docker-compose.yml_ agregaremos un servicio más.
+
+```bash
+version: "3.3"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=store
+      - POSTGRES_USER=noriega
+      - POSTGRES_PASSWORD=server2023$
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - 5050:80
+```
+
+Ahora tendremos que hacer que pgadmin corra en un contenedor.
+
+```bash
+docker-compose up -d pgadmin
+```
+
+Justo ahora tendriamos que tener dos servicios: el de la base de datos de postgresql y pgadmin4.
+
+## Integracion de postgres con node
+
+Para poder conectar directamente Node con postgres nos dirigiremos a la siguiente [documentación](https://node-postgres.com) en donde encontraremos los pasos para poder realizar la conexión
+
+### Instalación de PG
+
+Para poder hacer que node se conecte con postgres necesitaremos de una libreria llamada _pg_
+
+```bash
+npm i pg
+```
+
+Para tener un mayor orden en el código podemos crear una carpeta llamada _libs_ donde estaremos guardando configuraciones para librerias que utilizaremos (conexion a terceros DB o APIS).
+
+```bash
+mkdir libs
+```
+
+Dentro de ella agregaremos un archivo llamado _postgres.js_
+
+```bash
+touch postgres.js
+```
+
+Realizamos los cambios dentro del archivo
+```js
+const { Client } = require('pg');
+
+
+async function getConnection(){
+
+  const client = new Client({
+    host: 'localhost',
+    port: 5432,
+    user: 'noriega',
+    password: 'server2023$',
+    database: 'store'
+  });
+
+  await client.connect();
+  return client;
+}
+
+module.exports = getConnection();
+```
+
+__NOTA:__ la libreria necesita usar _asyn/await_
