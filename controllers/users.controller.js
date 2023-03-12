@@ -1,7 +1,16 @@
+const getConnection = require('../libs/postgres');
 let data = require('../examples/users.json');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const controller = {};
+
+controller.getTask = async (request, response) => {
+  const client = await getConnection();
+  const respuesta = await client.query('SELECT *FROM tasks');
+  const obtener = respuesta.rows;
+  return response.json(obtener);
+}
+
 
 controller.getUsers = (request, response) => { //recibe querys
   const { size } = request.query;
