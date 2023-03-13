@@ -1,7 +1,6 @@
 # Node-API-REST
 - [Creando servidor con Express](#express)
-- [URL´s para peticiones http](#metodos)
-- [Iniciar con Docker compose](#pasos-para-iniciar)
+- [Iniciar con Docker compose](#pasos-para-iniciar-docker-con-node)
 
 <h2 id="express">Creando mi primer servidor con Express</h2>
 
@@ -23,6 +22,7 @@ __Nota:__ te recomiendo instalar _nodemon_ de manera global:
 ```bash
 npm i nodemon -g
 ```
+
 3. Añadimos un archivo _.gitignore_ que lo dejare [aqui](./.gitignore).
 4. Añadimos otros archivos de configuración para buenas prácticas:
     - Crear archivo _.eslinttrc.json_ con el siguiente contenido:
@@ -63,33 +63,33 @@ npm i nodemon -g
     ```
 5. Por ultimo creamo nuestro archivo _index.js_ con el siguiente codigo:
 
-  ```js
-  const express = require('express');
-  const data = require('./products.json');
-  const app = express(); //usando constante de express
-  const port = 3000;
+    ```js
+    const express = require('express');
+    const data = require('./products.json');
+    const app = express(); //usando constante de express
+    const port = 3000;
 
-  // definiendo rutas
-  app.get('/', (request, response) => {
-    response.writeHead(200,{'Content-Type':'text/html'});
-    response.write("<h1>Login</h1>");
-    console.log(request.url);
-  })
+    // definiendo rutas
+    app.get('/', (request, response) => {
+      response.writeHead(200,{'Content-Type':'text/html'});
+      response.write("<h1>Login</h1>");
+      console.log(request.url);
+    })
 
-  app.listen(port, function(){
-    console.log(`Escuchando en: localhost:${port}/`);
-  });
-  ```
+    app.listen(port, function(){
+      console.log(`Escuchando en: localhost:${port}/`);
+    });
+    ```
 6. Creamos nuestros scripts para correr el servidor, nos vamos al archivo _package.json_ en el apartado de _"scripts"_ colocamos lo siguiente:
-```json
-  "dev": "nodemon ./index.js",
-  "start": "node ./index.js",
-  "lint": "eslint"
-```
+    ```json
+      "dev": "nodemon ./index.js",
+      "start": "node ./index.js",
+      "lint": "eslint"
+    ```
 7. Nos dirigimos a la terminal y escribimos lo siguiente para poder tener un servidor que se reinicie con cambios que hagamos automaticamente:
-  ```bash
-  npm run dev
-  ```
+    ```bash
+    npm run dev
+    ```
 
 Aparecera un mensaje como este:
 <div align="center">
@@ -101,36 +101,11 @@ Aparecera un mensaje como este:
 <div align="center">
   <img src="./imgs/url-express.PNG">
 </div>
-Y listo tenemos nuestro primer servido con _Express_
 
-<h2 id="metodos">URL´s para peticiones HTTP</h2>
-<h3 id="usuarios">Usuarios</h3>
-
-- [GET](#get)
-- [GET + PARAMETROS](#get-params)
-- [GET + PAGINACION](#get-pagination)
-- [POST](#post)
-- [UPDATE](#update)
-- [DELETE](#delete)
+Y listo tenemos nuestro primer servidor con _Express_
 
 
-Para poder obtener todos los datos de la API:
-<pre id="get">localhost:3000/api/v1/users</pre>
-
-Para poder buscar un usuario en especifico
-<pre id="get-params">localhost:3000/api/v1/users/ID_USUARIO</pre>
-
-Para poder crear un usuario nuevo
-<pre id="post">localhost:3000/api/v1/users</pre>
-
-Para actulizar un usuario:
-<pre id="post">localhost:3000/api/v1/users/ID_USUARIO</pre>
-
-Para eliminar un usuario:
-<pre id="delete">localhost:3000/api/v1/users/ID_USUARIO</pre>
-
-
-## Pasos para iniciar
+## Pasos para iniciar docker con node
 Crear el archivo de docker-compose
 ```bash
 touch docker-compose.yml
@@ -505,3 +480,145 @@ http://localhost:3000/api/v1/test/sequelize
 ```
 
 Y listo, tenemos nuestra primera consulta con el __ORM__
+
+## Primer modelo con sequelize
+
+Para crear un modelo con sequelize hay varias formas y son mediante clases y herencias, pero por el momento veremos una de ellas. Crearemos una carpeta llamada _db_ dentro de ella crearemos otra carpeta llamada _models_.
+
+Dentro de la carpeta models creamos un archivo llamado _user.model.js_ y dentro de el agregaremos el siguiente codigo
+
+```js
+const { Model, DataTypes, Sequelize } = require('sequelize');
+
+// buena paractica para definir cual sera el nombre de nuestra tabla
+const USER_TABLE = 'users';
+
+//crear el esquema que queremos que haga la DB
+const UserSchema = {
+    id: {
+        allowNull: false, //permitir que el campo sea o no nulo
+        autoIncrement: true, //campo incrementable
+        primaryKey: true, // llave primaria
+        type: DataTypes.INTEGER, // que tipo de valor recibira
+    },
+    email: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true, //tipo de campo unico
+    },
+    password: {
+        allowNull: false,
+        type: DataTypes.STRING
+    },
+    createdAt: { //
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'created_at', //definir el nombre de la columna
+        defaultValue: Sequelize.NOW //insertar fecha por fecto
+    }
+};
+
+class User extends Model {
+    static associate() {
+        //models = definiendo todas las relaciones
+    }
+
+    static config(sequelize){
+        return {
+            sequelize,
+            tableName: USER_TABLE,
+            modelName: 'User',
+            timestamps: false,
+        }
+    }
+}
+
+module.exports = { USER_TABLE, UserSchema, User }
+```
+
+Ahora crearemos en la misma carpeta un archivo llamado _index.js_ con el siguiente codigo
+
+```js
+//Se encarga de enviar la conexion hacia los modelos para hacer el mapeo de datos
+const { User, UserSchema } = require('./user.model');
+
+function setupModels(sequelize){
+    User.init(UserSchema, User.config(sequelize)); //enviar un modelo de esquema y configuracion
+}
+
+module.exports = setupModels;
+```
+
+Ahora editaremos de nuevo el archivo _sequelize.js_ de la conexión con la DB _(libs/sequelize.js)_
+
+```js
+const { Sequelize }= require('sequelize');
+const { config } =  require('../config/config');
+const setupModels =  require('../db/models');
+
+const USER = encodeURIComponent(config.dbUser);
+const PASSWORD = encodeURIComponent(config.dbPassword);
+const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+
+/**
+ * @logging hay dos opciones true o false, en caso de dar un error colocar console.log
+ * @dialect indicar a que DB nos vamos a conectar
+ */
+const sequelize = new Sequelize(URI, {
+    dialect: 'postgres',
+    logging: console.log,
+});
+
+setupModels(sequelize); //enviando conexion
+
+// hacer una sincronizacion de las comlumnas de las tablas
+sequelize.sync();
+
+module.exports = sequelize;
+```
+
+Ahora editaremos el archivo de _users.controller.js_ que se encuentra en la carpeta _controller_
+
+__NOTA:__ solo agregaremos una linea al principio del archivo y editaremos la funcion __getUsers__
+
+```js
+const { models } = require('../libs/sequelize');
+
+controller.getUsers = async (request, response) => {
+  const { size } = request.query;
+  const datos = [];
+  const limit = size || 10;
+
+  // User viene del archivo user.model.js dentro de la clase de User en el metodo estatico hay un valor llamado modelName:User
+  const rows = await models.User.findAll();
+  return response.json(rows);
+}
+```
+
+Si nosotros ingresamo a la ruta para poder ver a los usuarios que estan registrados.
+
+```bash
+http://localhost:3000/api/v1/users
+```
+
+No tendremos nada de información, porque la tabla aun esta vacia, entonces agregaremos datos dentro de __pgadmin__
+
+```sql
+INSERT INTO public.users(email, password, created_at)
+	VALUES ('dnoriega@gmail.com', 'admin123', NOW()),
+	('cindyardon@gmail.com','cindy123',NOW()),
+	('msalazar@gmail.com','msalazar123', NOW()),
+	('fgourlay2@gov.uk','test',NOW()),
+	('servidor@microsoft.com','servidor123',NOW()),
+	('platzi@platzi.com','platzi123',NOW());
+
+SELECT *FROM public.users;
+
+-- VACIAR LA TABLA
+TRUNCATE TABLE public.users;
+
+-- REINICIAR ID DESDE 1
+ALTER SEQUENCE users_id_seq RESTART WITH 1;
+```
+
+Y listo podremos probar que los datos si estan recibiendo.

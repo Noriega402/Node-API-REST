@@ -1,3 +1,4 @@
+const { models } = require('../libs/sequelize');
 const sequelize = require('../libs/sequelize');
 let data = require('../examples/users.json');
 const path = require('path');
@@ -7,7 +8,7 @@ const controller = {};
 
 /**
  *
- * @param {*} request 
+ * @param {*} request
  * @param {*} response responde con la consulta a la DB
  * @returns retorna en json solo los datos de la consulta realizada, si se requieren los metadatos agregarlos
  */
@@ -18,38 +19,13 @@ controller.getTasks = async (request, response) => {
 }
 
 
-controller.getUsers = (request, response) => { //recibe querys
+controller.getUsers = async (request, response) => { //recibe querys
   const { size } = request.query;
   const datos = [];
   const limit = size || 10;
 
-  if (size) {
-    for (let i = 0; i < limit; i++) {
-      datos.push({
-        id: data[i].id,
-        first_name: data[i].first_name,
-        last_name: data[i].last_name,
-        user_name: data[i].user_name,
-        email: data[i].email,
-        direction: data[i].direction,
-        password: data[i].password,
-      });
-    }
-    response.json(datos);
-  }else {
-    for (let i = 0; i < data.length; i++) {
-      datos.push({
-        id: data[i].id,
-        first_name: data[i].first_name,
-        last_name: data[i].last_name,
-        user_name: data[i].user_name,
-        email: data[i].email,
-        direction: data[i].direction,
-        password: data[i].password,
-      });
-    }
-    response.json(datos);
-  }
+  const rows = await models.User.findAll();
+  return response.json(rows);
 }
 
 controller.findUser = (request, response, next) => {
