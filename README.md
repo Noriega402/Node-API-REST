@@ -359,4 +359,61 @@ mkdir config
 touch config.js
 ```
 
-Dentro del archiv config colocaremos lo siguiente
+Dentro del archivo config colocaremos lo siguiente
+
+```js
+require('dotenv').config();
+
+const config = {
+    env: process.env.NODE_ENV || 'dev',
+    port: process.env.NODE_PORT || 3000,
+    dbUser: process.env.DB_USER,
+    dbPassword: process.env.DB_PASSWORD,
+    dbHost: process.env.DB_HOST,
+    dbName: process.env.DB_NAME,
+    dbPort: process.env.DB_PORT,
+}
+
+module.exports =  { config };
+```
+
+__NOTA:__ para que esto funcione debes descargar la libreria de ___dotenv___ para poder acceder a las variables de ambiente.
+
+Luego dentro de la carpeta _libs_ en el archivo de _postgres.pool.js_ debemos de colocar el siguiente codigo.
+
+```js
+const { Pool } = require('pg');
+
+const { config } = require('../config/config');
+
+const USER = encodeURIComponent(config.dbUser);
+const PASSWORD = encodeURIComponent(config.dbPassword);
+const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+
+const pool = new Pool({ connectionString: URI });
+
+module.exports = pool;
+```
+
+Creas un archivo _.env_ para poder hacer la busqueda de las variables de ambiente con node
+
+```bash
+touch .env
+```
+
+Dentro del archivo _.env_ se deberia de ver algo asi:
+
+```bash
+PORT=3000
+DB_USER='noriega'
+DB_PASSWORD='server2023$'
+DB_HOST='localhost'
+DB_NAME='store'
+DB_PORT='5432'
+```
+
+Por ultimo volvemos a correr la aplicacion
+
+```bash
+npm run dev
+```
