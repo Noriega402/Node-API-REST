@@ -285,4 +285,78 @@ async function getConnection(){
 module.exports = getConnection();
 ```
 
-__NOTA:__ la libreria necesita usar _asyn/await_
+__NOTA:__ la libreria necesita usar _async/await_
+
+### Crear un pool de conexiones
+
+El capitulo anterior vimos que podemos crear una conexion por medio de node y postgres, pero no es una forma tan optima, porque si hay varios usuarios dentro de nuestra app, necesitaremos tener varias conexiones para ellos, entonce aqi entran las _pool connection_ y lo hacemos de la siguiente manera:
+
+Creamos un nuevo archivo llamado _postgres.pool.js_ dentro de la carpeta _libs_
+
+```bash
+cd libs
+```
+
+```bash
+touch postgres.pool.js
+```
+
+Dentro del archivo de _postgres.pool.js_ agregamos el siguiente codigo
+
+```js
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  host: 'localhost',
+  port: 5432,
+  user: 'noriega',
+  password: 'server2023$',
+  database: 'store'
+});
+
+module.exports = pool;
+```
+
+Luego de esto nos dirigimos a nuestra carpeta _controllers_ y creamos un nuevo archivo para realizar las pruebas de conexion a la base de datos.
+
+```js
+const pool = requite('../libs/postregres.pool');
+const controller {}
+
+controller.getTasks = async (request, response) => {
+  const query = 'SELECT *FROM tasks';
+  pool.on('error', err => console.error(err)); //en caso de un error de conexion
+  const getResult = await pool.query(query);
+  return response.json(getResult.rows);
+}
+
+module.exports = controller;
+```
+
+Procedemos a agregar un archivo nuevas rutas dentro de nuestra carpeta _routers_ al archivo _test.router.js_ para poder hacer uso de esta direccion en la web
+
+```js
+const express = require('express');
+const router = express.Router();
+const controller = require('../controllers/tasks.controller');
+
+router.get('/', controller.getTasks);
+
+module.exports = router;
+```
+
+### Variables de ambiente con node
+
+De las maneras que se utilizaron para realizar conexiones y consultas a la base de datos es necesario saber que es una mala practica colocar __datos sensibles__ en caso alguien logre interceptar las credenciales a la DB se corre un riesgo, para eso utilizaremos node para crear variables de ambiente
+
+Creamos una carpeta llamada _config_, luego dentro de esa carpeta creamos un archivo llamado _config.js_ para lograr hacer las configuraciones de las variables de ambiente.
+
+```bash
+mkdir config
+```
+
+```bash
+touch config.js
+```
+
+Dentro del archiv config colocaremos lo siguiente
