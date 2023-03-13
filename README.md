@@ -417,3 +417,91 @@ Por ultimo volvemos a correr la aplicacion
 ```bash
 npm run dev
 ```
+
+Realizamo la consulta por medio de _postman_, _insomnia_ o _thunder client_ de la siguiente manera:
+
+```bash
+http://localhost:3000/api/v1/task
+```
+
+Tendremos nuestros datos para poder visualizar la consulta realizada con las variables de entorno.
+
+## Instalacion y configuración de Sequelize (ORM)
+
+Para iniciar debemos de saber lo más simple, ¿Qué es un ORM? lo explicaremos de manera sencilla, un __ORM (Object Relational Model)__ transforma y mapea a nuestra DB con metodos de la programacion orientada a objetos, se ejecutan metodos a travez de consultas
+### Ventaja de usar un ORM
+
+Es agnóstico, no importa si se esta usando MYSQL, PostgreSQL, MariaDB, Oracle, etc, siempre y cuando la DB use SQL.
+
+Para instalar sequelize en nuestro proyecto haremos uso de lo siguinte
+
+```bash
+npm install --save pg pghstore
+```
+
+Ya que se esta trabajando con postgres en caso de utilzar otras DB podemos ver la [documentacion oficial](https://sequelize.org/docs/v6/getting-started/) de sequelize
+
+Luego de instalar la libreria de sequelize, dentro de la carpeta de _libs_ crearemos un archivo llamado _sequelize.js_ para nuestra conexión con node.
+
+```js
+const { Sequelize } = require('sequelize');
+const { config } =  require('../config/config');
+
+const USER = encodeURIComponent(config.dbUser);
+const PASSWORD = encodeURIComponent(config.dbPassword);
+const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+
+/**
+ * @logging hay dos opciones true o false, en caso de dar un error colocar console.log
+ * @dialect indicar a que DB nos vamos a conectar
+ */
+const sequelize = new Sequelize(URI, {
+    dialect: 'postgres',
+    logging: console.log,
+});
+
+module.exports = sequelize;
+```
+
+Luego de eso procedemos a ir a nuestro archivo de _task.controller.js_ en la carpeta de _controllers_ y agregaremos una funcion para probar el ORM.
+
+__NOTA:__ el archivo que modificaremos tendrá codigo de una conexión con ___pool___ es opcional dejarlo o no, solo esa para fines educativos (en nuestro caso lo eliminaremos).
+
+```js
+const sequelize = require('../libs/sequelize');
+const controller = {};
+
+controller.getTasksSequelize = async (request, response) => {
+    const query = 'SELECT *FROM tasks';
+    const [data, metadata] = await sequelize.query(query);
+    return response.json(data);
+}
+
+module.exports = controller;
+```
+
+Luego iremos a la carpeta _routes_ para crear la ruta de la nueva consulta en el archivo de _test.router.js_
+
+```js
+const express = require('express');
+const router = express.Router();
+const controller = require('../controllers/tasks.controller');
+
+router.get('/sequelize', controller.getTasksSequelize);
+
+module.exports = router;
+```
+
+Y para comprobar que esta funcionando, corremos nuestra app.
+
+```bash
+npm run dev
+```
+
+Luego nos dirigimos a _postman_ para realizar la consulta a la siguiente direccion
+
+```bash
+http://localhost:3000/api/v1/test/sequelize
+```
+
+Y listo, tenemos nuestra primera consulta con el __ORM__

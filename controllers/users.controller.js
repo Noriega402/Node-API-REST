@@ -1,14 +1,20 @@
-const getConnection = require('../libs/postgres');
+const sequelize = require('../libs/sequelize');
 let data = require('../examples/users.json');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const controller = {};
 
-controller.getTask = async (request, response) => {
-  const client = await getConnection();
-  const respuesta = await client.query('SELECT *FROM tasks');
-  const obtener = respuesta.rows;
-  return response.json(obtener);
+
+/**
+ *
+ * @param {*} request 
+ * @param {*} response responde con la consulta a la DB
+ * @returns retorna en json solo los datos de la consulta realizada, si se requieren los metadatos agregarlos
+ */
+controller.getTasks = async (request, response) => {
+  const query = 'SELECT *FROM tasks';
+  const [data, metadata] = await sequelize.query(query);
+  return response.json(data);
 }
 
 

@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "author": "Daniel Noriega",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Noriega402/Node-API-REST/issues"
   },
@@ -32,6 +32,8 @@
     "express": "^4.18.2",
     "faker": "5.5.3",
     "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.29.3",
     "yup": "^0.32.11"
   }
 }
