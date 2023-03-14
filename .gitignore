@@ -105,3 +105,4 @@ dist
 
 #ignorar
 postgres_data
+mysql_data

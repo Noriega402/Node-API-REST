@@ -622,3 +622,7 @@ ALTER SEQUENCE users_id_seq RESTART WITH 1;
 ```
 
 Y listo podremos probar que los datos si estan recibiendo.
+
+### Crud con sequelize
+
+Realizaremos el crud para los usuarios, iremos a la carpeta de _controller_ para posteriormente editar las funciones de _getUsers_, _update_, _findUser_ y _newUser_

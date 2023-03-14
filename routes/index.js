@@ -5,6 +5,7 @@ const usersRouter = require('./users.router');
 const loginRouter = require('./login.router');
 const shoppingRouter = require('./shopping.router');
 const testRouter = require('./test.router');
+const {logErrors, errorHandler, ormErrorHandler} = require('../middlewares/error.handler');
 
 function routerApi(app) {
   const router = express.Router();
@@ -15,14 +16,9 @@ function routerApi(app) {
   router.use('/login', loginRouter);
   router.use('/shopping', shoppingRouter);
   router.use('/test', testRouter);
-  app.use((error, request, response, next) => {
-    // response.status(404).sendFile('/404.html', root);
-    response.json({
-      status: 404,
-      error: error.message,
-      path: error.path,
-    })
-  });
+  app.use(logErrors);
+  app.use(ormErrorHandler);
+  app.use(errorHandler);
 }
 
 module.exports = routerApi;

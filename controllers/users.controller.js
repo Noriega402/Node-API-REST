@@ -5,7 +5,6 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const controller = {};
 
-
 /**
  *
  * @param {*} request
@@ -19,7 +18,7 @@ controller.getTasks = async (request, response) => {
 }
 
 
-controller.getUsers = async (request, response) => { //recibe querys
+controller.getUsers = async (request, response, next) => { //recibe querys
   const { size } = request.query;
   const datos = [];
   const limit = size || 10;
@@ -28,81 +27,83 @@ controller.getUsers = async (request, response) => { //recibe querys
   return response.json(rows);
 }
 
-controller.findUser = (request, response, next) => {
-    const id = Number(request.params.id);
-    const search = data.find(user => user.id === id);
-
-    search
-      ? response.json(search)
-      : response.status(404).sendFile(path.join(__dirname,'../public/404.html'))
-}
-
-controller.newUser = async (request, response) => {
-  const body = request.body;
-  const ids = data.map(datos => datos.id);
-  const maxId = Math.max(...ids);
-  const passHash = await bcrypt.hash(body.password,10); //hash de encriptacion
-
-  const newUser = {
-    id: maxId + 1,
-    first_name: body.first_name,
-    last_name: body.last_name,
-    user_name: body.user_name,
-    email: body.email,
-    direction: body.direction,
-    password: passHash
-  }
-
-  data = [...data, newUser];
-  response.status(201).json(newUser);
-}
-
-controller.deleteUser = (request, response) => {
+controller.findUser = async (request, response, next) => {
   const id = Number(request.params.id);
-  const find = data.filter(item => item.id === id);
-  // console.log(find.length);
-  if (find.length !== 0) {
-    data = data.filter(user => user.id !== id); //modificar el json (elimina el usuario que se encontro con el ID)
-    response.json(data);
+
+  const find = await models.User.findByPk(id);
+  if (!find) {
+    return response.json({ error: "Not Found", description: "User don´t exist in DB" })
   } else {
-    response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
+    return response.json(find);
   }
+}
+
+controller.newUser = async (request, response, next) => {
+  try {
+    const body = request.body;
+    const passHash = await bcrypt.hash(body.password, 10); //hash de encriptacion
+
+    const datos = {
+      username: body.user_name,
+      email: body.email,
+      password: passHash,
+    };
+
+    const newUser = await models.User.create(datos);
+    //console.log(newUser);
+    response.json(newUser);
+  } catch (err) {
+    next(err);
+  }
+}
+
+controller.deleteUser = async (request, response) => {
+  const id = Number(request.params.id);
+  // const find = await models.User.findByPk(id);
+  const find = await models.User.findByPk(id);
+  if (!find) {
+    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+  }
+  const deleted = await find.destroy();
+
+  return response.json(find);
 }
 
 controller.update = async (request, response) => {
   const id = Number(request.params.id);
   const body = request.body;
-  const index = data.findIndex(item => item.id === id);
-  let user;
+  let userUpdate = {
+    username: body.user_name,
+    email: body.email,
+  };
 
-  // console.log(body.password);
-  if (index !== -1) {
-
-    if(body.password !== undefined){
-      const passHash = await bcrypt.hash(body.password, 10);
-      const dataUpdate = {...body, password: passHash};
-      user = data[index];
-      data[index] = {...user, ...dataUpdate};
-    }else{
-      user = data[index];
-      data[index] = {...user, ...body};
+  if (body.password !== undefined) {
+    const passHash = await bcrypt.hash(body.password, 10);
+    userUpdate = {
+      username: body.user_name,
+      email: body.email,
+      password: passHash,
     }
-
-    response.status(202).json(data[index]);
-  } else {
-    response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
   }
+
+  const user = await models.User.findByPk(id);
+  if (!user) {
+    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+  }
+
+  const updated = await user.update(userUpdate);
+  return response.json(updated);
 }
 
-controller.compare = async(request, response) => {
+controller.compare = async (request, response) => {
   const { username, password } = request.params;
   const index = data.findIndex(user => user.user_name == username);
-  if(index !== -1){
+  if (index !== -1) {
     const compare = await bcrypt.compare(password, data[index].password);
     compare ? response.status(200).json(data[index]).end()
-            : response.status(202).json({error: "error de credenciales"});
-  }else{
-    response.status(404).sendFile(path.join(__dirname,'../public/404.html'));
+      : response.status(202).json({ error: "error de credenciales" });
+  } else {
+    response.status(404).sendFile(path.join(__dirname, '../public/404.html'));
   }
 }
 
