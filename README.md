@@ -178,7 +178,7 @@ psql -h localhost -d store -U noriega
 
 __NOTA:__ -h es para indicar el host, -d para indicar la base de datos y -U es para indicar el nombre de usuario
 
-### Conectarse por medio de PGAdmin4
+### Agregar servicio de PGAdmin4
 
 En caso no nos sintamos muy comodos utilizando la base de datos por medio de la terminal podemos hacerlo por medio de PGAdmin4, pero tendremos que realizar unas configuraciones mas a al archivo de _docker-compose.yml_ agregaremos un servicio más.
 
@@ -214,7 +214,194 @@ docker-compose up -d pgadmin
 
 Justo ahora tendriamos que tener dos servicios: el de la base de datos de postgresql y pgadmin4.
 
-## Integracion de postgres con node
+## Ingresar a pgAdmin4
+Para poder ingresar a pgAdmin4 tendremos que revisar las configuraciones que realizamos con en el capitulo anterior, tendremos que ver cual es el puerto que expuso nuestra máquina anfitriona para pgAdmin, en nuestro caso es __5050__. ahora vamos a al navegador para colocar la siguiente direccion:
+
+```bash
+localhost:5050
+```
+
+<div align="center">
+
+![url para pgAdmin4](./imgs/node-postgres/interfaz-pgadmin.PNG)
+
+</div>
+
+Despues de un momento tendriamos que tener una pantalla similar a la imagen que se muestra a continueación.
+
+<div align="center">
+
+![interfaz pgAdmin4](./imgs/node-postgres/login.PNG)
+
+</div>
+
+Luego tendremos que ingresar un correo y una contraseña, las que previamente colocamos en nuestro archivo de _docker-compose.yml_, en nmi caso coloque lo siguiente:
+
+<div align="center">
+
+| Variable | Valor |
+| :--: |  :--:  |
+| email | admin@gmail.com |
+| password | root |
+
+</div>
+
+Colocamos los datos correspondientes, tendremos que crear nuestro servidor para poder crear la base de datos, realizaremos lo siguiente:
+
+1. Damos click derecho en el boton de __Servers__, luego damos click izquierdo en __Register__ y por ultimo click izquierdo en __Server__.
+
+<div align="center">
+
+![crear servidor pgadmin4](./imgs/node-postgres/crear-servidor.PNG)
+
+</div>
+
+2. Luego tendremos una pantalla como la siguiente donde tendremos que llenar un solo campo (los demas son opcionales).
+
+<div align="center">
+
+|Campo|Valor|
+|:--:|:--:|
+|Name|nombre del servidor nuevo|
+|Server group|grupo donde estara nuestro nuevo servidor|
+|Background|para establecer un color de fondo en el servidor (no recomendado)|
+|Foreground|para establecer un color de letra en el servidor (no recomendado)|
+
+</div>
+
+<div align="center">
+
+![nombre del servidor](./imgs/node-postgres/nombre-de-servidor.PNG)
+
+
+</div>
+
+3. Luego nos vamos a la opcion de __Connection__ y se divide en lo siguiente:
+
+<div align="center" id="img-datos-postgres">
+
+| Campo | Valor |
+| :-- | :-- |
+|Host name/address| nombre del host para postgres o direccion IP|
+|Port|numero de puerto para que postgres se conecte|
+|Maintenance database|el nombre de la base de datos|
+|Username|nombre de usuario de postgres|
+|Password|password de postgres|
+|Save Password?|guardar password|
+
+![registrar servidor pgAdmin4](./imgs/node-postgres/guardar-datos-postgres-interfaz.PNG)
+
+</div>
+
+__NOTA:__ Todo a excepción de la dirección IP esta dentro del archivo ___docker-compose.yml___
+
+### Ver direccion IP del contenedor de postgres
+
+Sabemos que nuestra DB esta corriendo en un contenedor de Docker, en la imagen hay una direccion IP pero no quiere decir que siempre sea la misma, entonces __¿Como hacemos para ver la dirección IP de postgres desde su contenedor?__, lo haremos de la siguiente manera:
+
+1. Nos dirigimos a la terminal y colocamos lo siguiente:
+```bash
+docker ps
+```
+
+Y mostrara los contenedores que se estan corriendo pero nos centraremos en el __ID del contenedor de postgres__ como lo muestra la siguente imagen
+
+<div align="center">
+
+![estado de contenedores](./imgs/node-postgres/ver-id-de-postgres.PNG)
+
+</div>
+
+2. Luego ejecutamos el comando para inspeccionar el contenedor:
+
+```bash
+docker inspect <id-del-contenedor>
+```
+
+Ejemplo:
+<pre>docker inspect a9852dddfa3</pre>
+
+El resultado tendria que ser como el siguiente:
+
+<div align="center">
+
+![inspeccionar contenedor](./imgs/node-postgres/ver-ip-de-postgres.PNG)
+
+</div>
+
+Luego navegamos dentro de la terminal hasta la parte de abajo y buscamos dentro de campo __Networks__ la direccion __IP del contenedor de postgres__.
+
+<div align="center">
+
+![encontrando IP de postgres en su contenedor](./imgs/node-postgres/ip-postgres.PNG)
+
+</div>
+
+Justo esa direccion IP es la que colocaremos en la interfaz de pgAdmin4 como estaba en la [imagen anterior](#img-datos-postgres)
+
+3. Por ultimo daremos click izquierdo en el botón __Save__.
+
+¡Ya tenemos nuestra base de datos!
+
+### Crear una tabla de pruebas de pgAdmin4
+
+1. Para crear la tabla daremos click en __store__ luego en __Databases__.
+
+2. Luego click en __store__.
+3. Click en __Schemas__.
+4. Click en __public__.
+5. Click derecho en __Tables__.
+6. Click en __Create__ y luego en __Table...__
+
+
+Pasos de forma gráfica:
+
+<div align="center">
+
+![paso 1](./imgs/node-postgres/db-1.PNG)
+![paso 2](./imgs/node-postgres/db-2.PNG)
+![paso 3](./imgs/node-postgres/db-3.PNG)
+![paso 4](./imgs/node-postgres/db-4.PNG)
+
+</div>
+
+Ahora tendremos una ventana para crear la tabla de prueba, la cual tendra los siguientes datos para llenar:
+
+<div align="center">
+
+|Campo|Valor|
+|:--:|:--:|
+|Name|nombre de la tabla|
+|Owner|propietario de la tabla|
+|Schema|Tipo de esquema|
+
+![Crear tabla pgAdmin4](./imgs/node-postgres/crear-tabla.PNG)
+
+</div>
+
+Ahora damos click en __Columns__ que esta en la parte superior de esa ventana y haremos los siguientes pasos:
+
+1. Daremos click en el boton con un simbolo de __+__ para agregar una columna a nuestra tabla.
+
+2. Tendremos que llenar algunos campos, no todos son requeridos.
+
+<div align="center">
+
+Nombre|Tipo de dato|Tamaño|Not NULL|Primary Key?|Default|
+|:--:|:--:|:--:|:--:|:--:|:--:|
+|id|serial||Si|Si||
+|title|character varying||Si|No||
+|completed|boolean||No|No|false|
+
+![agregar columnas](./imgs/node-postgres/crear-columnas-2.PNG)
+
+</div>
+
+3. Damos click al botón de __Save__.
+
+Listo, tendremos nuestra tabla de pruebas para realizar peticiones.
+
+## Integración de postgres con node
 
 Para poder conectar directamente Node con postgres nos dirigiremos a la siguiente [documentación](https://node-postgres.com) en donde encontraremos los pasos para poder realizar la conexión
 
@@ -404,6 +591,7 @@ Tendremos nuestros datos para poder visualizar la consulta realizada con las var
 ## Instalacion y configuración de Sequelize (ORM)
 
 Para iniciar debemos de saber lo más simple, ¿Qué es un ORM? lo explicaremos de manera sencilla, un __ORM (Object Relational Model)__ transforma y mapea a nuestra DB con metodos de la programacion orientada a objetos, se ejecutan metodos a travez de consultas
+
 ### Ventaja de usar un ORM
 
 Es agnóstico, no importa si se esta usando MYSQL, PostgreSQL, MariaDB, Oracle, etc, siempre y cuando la DB use SQL.
@@ -501,6 +689,11 @@ const UserSchema = {
         primaryKey: true, // llave primaria
         type: DataTypes.INTEGER, // que tipo de valor recibira
     },
+    username:{
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true, //tipo de campo unico
+    },
     email: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -536,10 +729,9 @@ class User extends Model {
 module.exports = { USER_TABLE, UserSchema, User }
 ```
 
-Ahora crearemos en la misma carpeta un archivo llamado _index.js_ con el siguiente codigo
+Ahora crearemos en la misma carpeta un archivo llamado _index.js_ con el siguiente codigo (siempre en la misma carpeta).
 
 ```js
-//Se encarga de enviar la conexion hacia los modelos para hacer el mapeo de datos
 const { User, UserSchema } = require('./user.model');
 
 function setupModels(sequelize){
@@ -595,7 +787,7 @@ controller.getUsers = async (request, response) => {
 }
 ```
 
-Si nosotros ingresamo a la ruta para poder ver a los usuarios que estan registrados.
+Si nosotros ingresamos a la ruta para poder ver a los usuarios que estan registrados.
 
 ```bash
 http://localhost:3000/api/v1/users
@@ -604,25 +796,265 @@ http://localhost:3000/api/v1/users
 No tendremos nada de información, porque la tabla aun esta vacia, entonces agregaremos datos dentro de __pgadmin__
 
 ```sql
-INSERT INTO public.users(email, password, created_at)
-	VALUES ('dnoriega@gmail.com', 'admin123', NOW()),
-	('cindyardon@gmail.com','cindy123',NOW()),
-	('msalazar@gmail.com','msalazar123', NOW()),
-	('fgourlay2@gov.uk','test',NOW()),
-	('servidor@microsoft.com','servidor123',NOW()),
-	('platzi@platzi.com','platzi123',NOW());
+INSERT INTO public.users(username,email, password, created_at)
+	VALUES ('dnoriega','dnoriega@gmail.com', 'admin123', NOW()),
+	('cindyardon','cindyardon@gmail.com','cindy123',NOW()),
+	('msalazar','msalazar@gmail.com','msalazar123', NOW()),
+	('fgourlay2','fgourlay2@gov.uk','fgourlay2',NOW()),
+	('servidor','servidor@microsoft.com','servidor123',NOW()),
+	('platzi123','platzi.team@platzi.com','platzi123',NOW());
 
+-- Ver loca datos insertados en la tabla users
 SELECT *FROM public.users;
-
--- VACIAR LA TABLA
-TRUNCATE TABLE public.users;
-
--- REINICIAR ID DESDE 1
-ALTER SEQUENCE users_id_seq RESTART WITH 1;
 ```
 
 Y listo podremos probar que los datos si estan recibiendo.
 
-### Crud con sequelize
+### Crud con sequelize y postgres
 
-Realizaremos el crud para los usuarios, iremos a la carpeta de _controller_ para posteriormente editar las funciones de _getUsers_, _update_, _findUser_ y _newUser_
+Realizaremos el crud para los usuarios, iremos a la carpeta de _controller_ para posteriormente editar el archivo _users.controller.js_ en las funciones de _getUsers_, _update_, _findUser_ y _newUser_
+
+Función getUsers:
+
+```js
+controller.getUsers = async (request, response, next) => {
+  const { size } = request.query;
+  const datos = [];
+  const limit = size || 10;
+
+  const rows = await models.User.findAll();
+  return response.json(rows);
+}
+```
+
+Función findUser:
+
+```js
+controller.findUser = async (request, response, next) => {
+  const id = Number(request.params.id);
+
+  const find = await models.User.findByPk(id);
+  if (!find) {
+    return response.json({ error: "Not Found", description: "User don´t exist in DB" })
+  } else {
+    return response.json(find);
+  }
+}
+```
+
+Función newUser:
+
+```js
+controller.newUser = async (request, response, next) => {
+  try {
+    const body = request.body;
+    const passHash = await bcrypt.hash(body.password, 10); //hash de encriptacion
+
+    const datos = {
+      username: body.user_name,
+      email: body.email,
+      password: passHash,
+    };
+
+    const newUser = await models.User.create(datos);
+    //console.log(newUser);
+    response.json(newUser);
+  } catch (err) {
+    next(err);
+  }
+}
+```
+
+Función deleteUser:
+
+```js
+controller.deleteUser = async (request, response) => {
+  const id = Number(request.params.id);
+  // const find = await models.User.findByPk(id);
+  const find = await models.User.findByPk(id);
+  if (!find) {
+    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+  }
+  const deleted = await find.destroy();
+
+  return response.json(find);
+}
+```
+
+Función update:
+
+```js
+controller.update = async (request, response) => {
+  const id = Number(request.params.id);
+  const body = request.body;
+  let userUpdate = {
+    username: body.user_name,
+    email: body.email,
+  };
+
+  if (body.password !== undefined) {
+    const passHash = await bcrypt.hash(body.password, 10);
+    userUpdate = {
+      username: body.user_name,
+      email: body.email,
+      password: passHash,
+    }
+  }
+
+  const user = await models.User.findByPk(id);
+  if (!user) {
+    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+  }
+
+  const updated = await user.update(userUpdate);
+  return response.json(updated);
+}
+```
+<div id="ejemplos-crud"></div>
+Probamos cada una de las rutas en postman
+
+- Mostrar todos los usuarios (__GET__)
+```bash
+http://localhost:3000/api/v1/users
+```
+
+- Buscar usuario especifico con ID (__GET__)
+
+```bash
+http://localhost:3000/api/v1/users/2
+```
+
+- Borrar un usuario(__DELETE__)
+
+```bash
+http://localhost:3000/api/v1/users/2
+```
+
+- Crear un nuevo usuario (__POST__)
+```bash
+http://localhost:3000/api/v1/users
+```
+
+Ejemplo para el body en postman:
+```json
+{
+  "username":"dnoriega",
+  "email":"dnoriega@gmail.com",
+  "password":"dnoriega",
+}
+```
+
+- Actualizar un usuario por ID (__PATCH__)
+```bash
+http://localhost:3000/api/v1/users/1
+```
+
+Ejemplo para el body en postman:
+```json
+{
+  "username":"test",
+  "email":"test@gmail.com",
+  "password":"testpass123",
+}
+```
+
+## CRUD con sequelize y mysql
+
+Antes vimos como hacer un crud con postgres, pero lo bueno de usar sequelize es que no tenenmos que cambiar nada en las consultas de SQL o la estructura de las funciones de usuarios, lo unico que se tiene que realizar es cambiar la conexión de la DB y agregar unas librerias para que pueda funcionar
+
+- Agregar la libreria para que sea compatible con mysql:
+
+```bash
+npm install --save mysql2
+```
+
+Ahora agregaremos el servicio de mysql y phpmyadmin para la interfaz gráfica dentro del archivo de ___docker-compose.yml___ de la siguiente manera.
+
+```bash
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE=store
+      - MYSQL_USER=noriega
+      - MYSQL_ROOT_PASSWORD=server2023$
+      - MYSQL_PORT=3306
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      - MYSQL_ROOT_PASSWORD=server2023$
+      - PMA_HOST=mysql
+    ports:
+      - 8080:80
+```
+
+Son casi que las mismas configuraciones de postgres, lo unico que cambian son las conexiones de puertos, nombre de variables de entorno y en donde se guardaran los volumenes de mysql.
+
+Ahora creamos la carpeta donde se guardara el volumen de mysql
+
+```bash
+mkdir mysql_data
+```
+
+Configuramos en nuestro archivo __.env__ las nuevas conexiones de puertos y nombres de usuario:
+
+```bash
+DB_USER='root'
+DB_PORT='3306'
+```
+
+__NOTA:__ son las unicas que se necesitan cambiar.
+
+Ahora nos vamos a la carpeta ___libs___ en el archivo ___sequelize.js___ editaremos la linea ___const URI___ por la siguiente (solo es de editar postgres por mysql)
+
+```js
+const URI = `mysql://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+```
+
+Y tambien la siguiente línea, cambiar postgres por mysql:
+
+```js
+const sequelize = new Sequelize(URI, {
+    dialect: 'mysql',
+    logging: console.log,
+});
+```
+
+Tenemos todo listo para realizar las pruebas
+
+- Levantamos el servicio de mysql y phpmyadmin
+
+```bash
+docker-compose up -d mysql
+docker-compose up -d phpmyadmin
+```
+
+- Vamos al navegador web para abrir la interfaz de _phpmyadmin_
+
+```bash
+localhost:8080
+```
+
+- Colocamos nuestras credenciales para inicio de sesión:
+
+<div align="center">
+
+|Campos|Datos|
+|:--:|:--:|
+|usuario:|root|
+|password:|server2023$|
+
+</div>
+
+- Nuestra tabla __store__ se creo con exito, agregaremos información a la tabla desde postman con los [ejemplos](#ejemplos-crud) antes vistos.
+
+Y listo, las grandes ventajas que nos da Docker de poder tener correr varios servicios.
+
+
+__AGREGAR MIDDLEWARES EN EL README__
+
+
