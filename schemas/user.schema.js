@@ -21,15 +21,7 @@ function validate(validation, property) {
 
 function createUserValidation(data) {
   const schema = yup.object().shape({
-    first_name: yup
-      .string(errors.nameString)
-      .matches(regexNames, errors.nameRegex)
-      .required(errors.required),
-    last_name: yup
-      .string(errors.surnameString)
-      .matches(regexNames, errors.surnameRegex)
-      .required(errors.required),
-    user_name: yup
+    username: yup
       .string(errors.userName)
       .matches(regexUserName, errors.userNameRegex)
       .required(errors.required),
@@ -37,16 +29,10 @@ function createUserValidation(data) {
       .string()
       .matches(regexMail, errors.emailRegex)
       .required(errors.required),
-    direction: yup.string(errors.direction),
     password: yup
       .string()
       .matches(regexPassword, "Debe de tener minimo 8 caracteres (simbolos y letras)")
-      .required(errors.required),
-    credit_card: yup
-      .string()
-      .min(16, errors.card)
-      .max(16, errors.card)
-      .matches(regexCard),
+      .required(errors.required)
   });
 
   schema.validateSync(data);
@@ -62,7 +48,7 @@ function updateUserValidation(data) {
       .string(errors.surnameString)
       .min(3, errors.surnameMin)
       .matches(regexNames, errors.surnameRegex),
-    user_name: yup
+    username: yup
       .string(errors.userName)
       .min(3, errors.userNameMin)
       .matches(regexUserName, errors.userNameRegex),

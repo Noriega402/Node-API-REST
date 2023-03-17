@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "lint": "eslint"
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:revert": "sequelize-cli db:migrate:undo",
+    "migrations:delete": "sequelize-cli db:migrate:undo:all"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Noriega402/Node-API-REST.git"
   },
-  "keywords": [],
+  "keywords": ["NodeJS","postgreSQL", "sequelize", "express"],
   "author": "Daniel Noriega",
   "license": "MIT",
   "bugs": {
@@ -23,7 +26,9 @@
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.3"
+    "nodemon": "^2.0.21",
+    "prettier": "^2.8.3",
+    "sequelize-cli": "^6.6.0"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

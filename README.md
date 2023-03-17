@@ -1057,4 +1057,134 @@ Y listo, las grandes ventajas que nos da Docker de poder tener correr varios ser
 
 __AGREGAR MIDDLEWARES EN EL README__
 
+## Migraciones con sequelize ORM
+
+Debemos instalar el paquete se _sequelize-cli_ desde la terminal, se instalara como dependencia de desarrollo.
+
+```bash
+npm i sequelize-cli -D
+```
+
+Ahora agregaremos un archovo de configuracion para las migraciones desde la carpeta raiz qu se llame __.sequelizerc__
+
+```bash
+touch .sequelizerc
+```
+
+Ahora editaremos el archivo que acabamos de crear co la siguiente informacion para mandarles las rutas de donde estaran las migraciones, seeder y modelos de la DB:
+
+```js
+module.exports = {
+    'config': './db/config.js',
+    'models-path': ' ./db/models/',
+    'migrations-path': './db/migrations/',
+    'seeders-path': './db/seeders/',
+}
+```
+
+Procedemos a crear las carpetas de __migrations__ y __seeders__ dentro de la carpeta de __db__
+
+```bash
+cd db
+```
+
+```bash
+mkdir migrations
+```
+
+```bash
+mkdir seeders
+```
+
+Agregamos un __config.js__ denttro de la carpeta __db__.
+
+```bash
+touch config-js
+```
+
+Dentro del archivo _config.js_ que acabamos de crear copiaremos varias cosas que ya usamos anteriormentee en archivos anteriores.
+
+```js
+const { config } = require('../config/config');
+
+const USER = encodeURIComponent(config.dbUser);
+const PASSWORD = encodeURIComponent(config.dbPassword);
+const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+
+module.exports = {
+    development: {
+        url: URI,
+        dialect: 'postgres',
+    },
+    production: {
+        url: URI,
+        dialect: 'postgres',
+    }
+}
+```
+
+Ahora configuraremos y haremos correr las migraciones con __npm scripts__.
+
+Dentro del archivo _package.json_ agregaremos un nuevo script para ejecutar las migraciones:
+
+```json
+"migrations:generate": "sequelize-cli migration:generate --name"
+```
+
+Luego nos vamos a la terminal y ejecutamos el nuevo script para que cree la nueva migracion dentro de la carpeta __migrations__:
+
+```bash
+npm run migrations:generate create-user
+```
+
+Seguido de esto en nuestro archivo __sequelize.js__ (carpeta -> _libs/sequelize.js_) comentaremos la el codigo siguiente porque no sera necesaria ya que trabajaremos por medio de migraciones de ahora en adelante
+
+```js
+//sequelize.sync();
+```
+
+Editamos el archivo de migracion que creamos hace unos momentos y si eres curioso tiene una sintaxis parecida a la migraciones de _laravel_, entonces agregaremos el siguiente codigo (solo seran dos lineas, pero puedes copiarlo todo de nuevo):
+
+```js
+'use strict';
+
+const { USER_TABLE, UserSchema } = require('../models/user.model');
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.createTable(USER_TABLE, UserSchema);
+  },
+
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable(USER_TABLE);
+  }
+};
+```
+
+Lo unico que se esta agregando son el modelo y nombre de la tabla de usuarios, ademas de eso se agrego para poder crear una tabla dentro de la BD.
+
+Luego iremos a crear un nuevo script al archivo _package.json_ para poder enviar las migraciones, rollback para las migraciones y eliminar las migraciones.
+
+Script para correr las migraciones
+```json
+"migrations:run": "sequelize-cli db:migrate"
+```
+
+Script para un rollback de las migraciones
+
+```json
+"migrations:revert": "sequelize-cli db:migrate:undo"
+```
+
+Script para eliminar las migraciones
+
+```json
+"migrations:delete": "sequelize-cli db:migrate:undo:all"
+```
+
+Ejecutamos el comando para las migraciones y lito deberiamos de tener la tabla de usuarios en la DB.
+
+## Modificando un entidad
+
 

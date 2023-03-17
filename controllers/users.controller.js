@@ -44,7 +44,7 @@ controller.newUser = async (request, response, next) => {
     const passHash = await bcrypt.hash(body.password, 10); //hash de encriptacion
 
     const datos = {
-      username: body.user_name,
+      username: body.username,
       email: body.email,
       password: passHash,
     };
