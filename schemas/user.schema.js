@@ -32,7 +32,11 @@ function createUserValidation(data) {
     password: yup
       .string()
       .matches(regexPassword, "Debe de tener minimo 8 caracteres (simbolos y letras)")
-      .required(errors.required)
+      .required(errors.required),
+    role: yup
+    .string()
+    .min(4,"debe tener como minimo 4 caracteres"),
+
   });
 
   schema.validateSync(data);
@@ -40,14 +44,6 @@ function createUserValidation(data) {
 
 function updateUserValidation(data) {
   const schema = yup.object().shape({
-    first_name: yup
-      .string(errors.nameString)
-      .min(3, errors.nameMin)
-      .matches(regexNames, errors.nameRegex),
-    last_name: yup
-      .string(errors.surnameString)
-      .min(3, errors.surnameMin)
-      .matches(regexNames, errors.surnameRegex),
     username: yup
       .string(errors.userName)
       .min(3, errors.userNameMin)
@@ -55,12 +51,10 @@ function updateUserValidation(data) {
     email: yup
       .string()
       .matches(regexMail, errors.emailRegex),
-    direction: yup.string(errors.direction),
-    credit_card: yup
-      .string()
-      .min(16, errors.card)
-      .max(16, errors.card)
-      .matches(regexCard),
+    password: yup
+    .string(),
+    role: yup
+    .string(),
   });
 
   schema.validateSync(data);

@@ -40,14 +40,22 @@ controller.findUser = async (request, response, next) => {
 
 controller.newUser = async (request, response, next) => {
   try {
-    const body = request.body;
+    const body = request.body
+    const role = request.body.role;
     const passHash = await bcrypt.hash(body.password, 10); //hash de encriptacion
-
-    const datos = {
+  
+    let datos = {
       username: body.username,
       email: body.email,
       password: passHash,
     };
+
+    if(role !== undefined){
+      datos = {
+        ...datos,
+        role
+      }
+    }
 
     const newUser = await models.User.create(datos);
     //console.log(newUser);
@@ -84,6 +92,13 @@ controller.update = async (request, response) => {
       email: body.email,
       password: passHash,
     }
+  }
+
+  if(body.role !== undefined){
+     userUpdate = {
+      ...userUpdate,
+      role: body.role,
+     }
   }
 
   const user = await models.User.findByPk(id);

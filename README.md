@@ -1187,4 +1187,161 @@ Ejecutamos el comando para las migraciones y lito deberiamos de tener la tabla d
 
 ## Modificando un entidad
 
+¿Qué pasa si a la hora de ejecutar mis migraciones olvide agregar una tabla?
 
+Nuestra opción sera agregar una nueva migración para crear una nueva columna a la tabla __users__, entonces para esto ejecutaremos el comando para crear migraciones :
+
+```bash
+npm run migrations:generate addRole
+```
+
+Luego modificamos nuestro archivo de ls siguiente manera:
+
+```js
+'use strict';
+
+const {USER_TABLE, UserSchema} =require('../models/user.model');
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.addColumn(USER_TABLE, 'role', UserSchema.role); // agregar columna
+  },
+
+  async down (queryInterface, Sequelize) {
+    await queryInterface.removeColumn(USER_TABLE, 'role'); //remover/eliminar/borrar columna
+  }
+};
+```
+
+Luego hacemos correr las migraciones:
+
+```bash
+npm run migrations:run
+```
+
+Podemos revisar en nuestra DB que se realizo con exito.
+
+Ahora que tenemos una nueva columna, debemos de validar que sea un campo valido en nuestras validaciones -> (___schemas/users.schemas.js___), modificaremos las validaciones de __nuevo y actualizar__ usuarios.
+
+```js
+function createUserValidation(data) {
+  const schema = yup.object().shape({
+    username: yup
+      .string(errors.userName)
+      .matches(regexUserName, errors.userNameRegex)
+      .required(errors.required),
+    email: yup
+      .string()
+      .matches(regexMail, errors.emailRegex)
+      .required(errors.required),
+    password: yup
+      .string()
+      .matches(regexPassword, "Debe de tener minimo 8 caracteres (simbolos y letras)")
+      .required(errors.required),
+    role: yup
+    .string()
+    .min(4,"debe tener como minimo 4 caracteres"),
+
+  });
+
+  schema.validateSync(data);
+}
+
+function updateUserValidation(data) {
+  const schema = yup.object().shape({
+    username: yup
+      .string(errors.userName)
+      .min(3, errors.userNameMin)
+      .matches(regexUserName, errors.userNameRegex),
+    email: yup
+      .string()
+      .matches(regexMail, errors.emailRegex),
+    password: yup
+    .string(),
+    role: yup
+    .string(),
+  });
+
+  schema.validateSync(data);
+}
+```
+
+Luego en nuestro modelo de ___user.model.js___ agregaremos a la tabla para crear la opcion de el campo rol:
+
+```js
+role: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        defaultValue: 'personalizado'
+    },
+```
+
+y modificamos las consultas en ___user.controller.js___
+
+Para el _newUser_
+```js
+controller.newUser = async (request, response, next) => {
+  try {
+    const body = request.body
+    const role = request.body.role;
+    const passHash = await bcrypt.hash(body.password, 10); //hash de encriptacion
+  
+    let datos = {
+      username: body.username,
+      email: body.email,
+      password: passHash,
+    };
+
+    if(role !== undefined){
+      datos = {
+        ...datos,
+        role
+      }
+    }
+
+    const newUser = await models.User.create(datos);
+    //console.log(newUser);
+    response.json(newUser);
+  } catch (err) {
+    next(err);
+  }
+}
+```
+
+Para _update_
+
+```js
+controller.update = async (request, response) => {
+  const id = Number(request.params.id);
+  const body = request.body;
+  let userUpdate = {
+    username: body.user_name,
+    email: body.email,
+  };
+
+  if (body.password !== undefined) {
+    const passHash = await bcrypt.hash(body.password, 10);
+    userUpdate = {
+      username: body.user_name,
+      email: body.email,
+      password: passHash,
+    }
+  }
+
+  if(body.role !== undefined){
+     userUpdate = {
+      ...userUpdate,
+      role: body.role,
+     }
+  }
+
+  const user = await models.User.findByPk(id);
+  if (!user) {
+    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+  }
+
+  const updated = await user.update(userUpdate);
+  return response.json(updated);
+}
+```
