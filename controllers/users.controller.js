@@ -43,14 +43,14 @@ controller.newUser = async (request, response, next) => {
     const body = request.body
     const role = request.body.role;
     const passHash = await bcrypt.hash(body.password, 10); //hash de encriptacion
-  
+
     let datos = {
       username: body.username,
       email: body.email,
       password: passHash,
     };
 
-    if(role !== undefined){
+    if (role !== undefined) {
       datos = {
         ...datos,
         role
@@ -67,7 +67,6 @@ controller.newUser = async (request, response, next) => {
 
 controller.deleteUser = async (request, response) => {
   const id = Number(request.params.id);
-  // const find = await models.User.findByPk(id);
   const find = await models.User.findByPk(id);
   if (!find) {
     return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
@@ -94,16 +93,16 @@ controller.update = async (request, response) => {
     }
   }
 
-  if(body.role !== undefined){
-     userUpdate = {
+  if (body.role !== undefined) {
+    userUpdate = {
       ...userUpdate,
       role: body.role,
-     }
+    }
   }
 
   const user = await models.User.findByPk(id);
   if (!user) {
-    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+    return response.status(404).json({ statusCode: 404, error: "Not Found", message: "User not found" });
   }
 
   const updated = await user.update(userUpdate);

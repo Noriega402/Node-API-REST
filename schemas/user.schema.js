@@ -34,8 +34,8 @@ function createUserValidation(data) {
       .matches(regexPassword, "Debe de tener minimo 8 caracteres (simbolos y letras)")
       .required(errors.required),
     role: yup
-    .string()
-    .min(4,"debe tener como minimo 4 caracteres"),
+      .string()
+      .min(4, "debe tener como minimo 4 caracteres"),
 
   });
 
@@ -52,20 +52,20 @@ function updateUserValidation(data) {
       .string()
       .matches(regexMail, errors.emailRegex),
     password: yup
-    .string(),
+      .string(),
     role: yup
-    .string(),
+      .string(),
   });
 
   schema.validateSync(data);
 }
 
-function deleteUserValidation(data){
+function deleteUserValidation(data) {
   const schema = yup.object().shape({
     id: yup
-    .number(errors.number)
-    .integer(errors.integer)
-    .required(errors.required),
+      .number(errors.number)
+      .integer(errors.integer)
+      .required(errors.required),
   });
 
   schema.validateSync(data);
