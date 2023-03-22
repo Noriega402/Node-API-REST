@@ -1,5 +1,6 @@
 const yup = require('yup');
 const errors = require('./errors/message');
+const bcrypt = require('bcrypt');
 const regexNames = /^[a-zA-Z]+$/gi;
 const regexMail = /^[a-zA-z0-9_.]+@[a-zA-Z0-9-_]+\.[a-zA-Z]{2,4}/gi;
 const regexUserName = /^[a-zA-Z0-9-_]+/gi;
@@ -19,7 +20,7 @@ function validate(validation, property) {
   }
 }
 
-function createUserValidation(data) {
+async function createUserValidation(data) {
   const schema = yup.object().shape({
     username: yup
       .string(errors.userName)
@@ -36,7 +37,6 @@ function createUserValidation(data) {
     role: yup
       .string()
       .min(4, "debe tener como minimo 4 caracteres"),
-
   });
 
   schema.validateSync(data);

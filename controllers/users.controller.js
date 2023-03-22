@@ -23,7 +23,9 @@ controller.getUsers = async (request, response, next) => { //recibe querys
   const datos = [];
   const limit = size || 10;
 
-  const rows = await models.User.findAll();
+  const rows = await models.User.findAll({
+    include: ['customer'], // traer datos asociados de customers
+  });
   return response.json(rows);
 }
 
@@ -48,18 +50,18 @@ controller.newUser = async (request, response, next) => {
       username: body.username,
       email: body.email,
       password: passHash,
-    };
+    }
 
-    if (role !== undefined) {
+    if (body.role !== undefined) {
       datos = {
         ...datos,
-        role
+        role: body.role,
       }
     }
 
     const newUser = await models.User.create(datos);
-    //console.log(newUser);
     response.json(newUser);
+
   } catch (err) {
     next(err);
   }

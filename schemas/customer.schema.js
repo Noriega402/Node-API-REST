@@ -1,5 +1,6 @@
 const yup = require('yup');
 const errors = require('./errors/message');
+const { createUserValidation, updateUserValidation } = require('./user.schema');
 
 function validate(validation, property) {
     return (request, response, next) => {
@@ -19,7 +20,7 @@ function newCustomerValidation(data) {
         firstName: yup.string().required(),
         lastName: yup.string().required(),
         phone: yup.string().min(8),
-        userId: yup.number().required(),
+        user: yup.object().shape(createUserValidation)
     });
 
     schema.validateSync(data);

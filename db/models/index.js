@@ -6,7 +6,8 @@ function setupModels(sequelize){
     User.init(UserSchema, User.config(sequelize)); //enviar un modelo de esquema y configuracion
     Customer.init(CustomerSchema, Customer.config(sequelize));
 
-    Customer.associate(sequelize.models) //asociar tablas
+    User.associate(sequelize.models);
+    Customer.associate(sequelize.models); //asociar tablas
 }
 
 module.exports = setupModels;

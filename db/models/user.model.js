@@ -25,7 +25,12 @@ const UserSchema = {
         allowNull: false,
         type: DataTypes.STRING
     },
-    createdAt: { //
+    role: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        defaultValue: 'customer',
+    },
+    createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
         field: 'created_at', //definir el nombre de la columna
@@ -34,8 +39,12 @@ const UserSchema = {
 };
 
 class User extends Model {
-    static associate() {
-        //models = definiendo todas las relaciones
+    static associate(models) {
+        //creando asociacion de users con customers
+        this.hasOne(models.Customer, {
+            as: 'customer',
+            foreignKey: 'userId' // referencia para traer las asociaciones
+        });
     }
 
     static config(sequelize){
