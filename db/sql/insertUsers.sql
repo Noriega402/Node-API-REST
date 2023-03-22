@@ -1,9 +1,18 @@
-select *from users;
-INSERT INTO users(id,username,email,password,created_at, role) VALUES (1,'MSalazar23','Msalazar23@gmail.com','$2b$10$Qyj9FfdS/3nx6IKNE5bTIOYQPOg05bE5t.xsvdDPCY33bguv6/n5i','2023-03-20 13:43:47.841-06','customer'),
+INSERT INTO users(id,username,email,password,created_at,role) VALUES(1,'MSalazar23','Msalazar23@gmail.com','$2b$10$Qyj9FfdS/3nx6IKNE5bTIOYQPOg05bE5t.xsvdDPCY33bguv6/n5i','2023-03-20 13:43:47.841-06','customer'),
 (2,'Dnoriega','Dnoriega@gmail.com','$2b$10$Ck7ol7vhwjAfxkcFmNkGYuFCGiiwxXjrKqATP/mHOT1mObzHopaw.','2023-03-20 14:08:46.948-06','customer'),
 (3,'Dcaceres','Dcaceres@gmail.com','$2b$10$J.lwU.2stz8chUj2BYjXgeLMg08ZUeZ.p6Uy8KOyK.O28maJDb01a','2023-03-20 14:09:28.647-06','customer'),
 (4,'Bmilena','Bmilena@gmail.com','$2b$10$bSOJhaW37mRW/ScGZZhRQ.M4gxuvpzSydA3lXdoWd.VIiWLnYjhou','2023-03-20 14:11:44.782-06','customer'),
 (5,'Fchinchilla','Fchinchilla@gmail.com','$2b$10$HzlbJHcaRWivuoE7vHpqC.W/8tq1A7rnp3ZdINrc2q1fItkx0ofFu','2023-03-20 14:12:38.786-06','customer'),
 (6,'Ehernandez','Ehernandez@gmail.com','$2b$10$liHse3CnWoFdh5bczjoA8uKcODa3b6tvf.CBnIE69kiALZyY/GcPy','2023-03-20 14:18:42.992-06','customer'),
 (7,'Mhernandez','Mhernandez@gmail.com','$2b$10$k7mF6EjQIr4oZyxCaX2MY.j6/miB.Vsl6Yu/l/WYY6tF4Gl2eEGTC','2023-03-20 14:19:45.221-06','customer'),
-(8,'Lhernandez','Lhernandez@gmail.com','$2b$10$J899e2w6jp7C7FXA92yAKOlV.7u6vxtR4KyOkcpz74ttC9DorPO5a','2023-03-20 14:20:49.066-06','customer')
+(8,'Lhernandez','Lhernandez@gmail.com','$2b$10$J899e2w6jp7C7FXA92yAKOlV.7u6vxtR4KyOkcpz74ttC9DorPO5a','2023-03-20 14:20:49.066-06','customer'),
+(9,'GHerrera','GHerrera@gmail.com','$2b$10$K3/ATrnirzF7PkPMzE3Otu/Q.kGvxbNdOnXstB6j36f37A6.sl.bS','2023-03-20 15:09:27.284-06','customer'),
+(10,'JMarroquin','JMarroquin@gmail.com','$2b$10$abKCfx8ywcqda.ZXmQiewO.jRO59tepQYTQOWH3vs1Brc0.5RY7xO','2023-03-20 16:27:04.067-06','customer'),
+(11,'Dgomez','Dgomez@gmail.com','$2b$10$Bx6zS0LlT4CLiLEk8wjtVegNFgW.O8JDbNW.EbCA25Dks9Q1TCloG','2023-03-20 16:28:40.424-06','customer'),
+(12,'Jmejicanos','Jmejicanos@gmail.com','$2b$10$bBigbBifuI./1aRFO7DBM.vJsvYAn/tMNNUaEa.fYogOPc6.Oi.Ua','2023-03-20 16:29:40.844-06','customer'),
+(13,'Otobias','Otobias@gmail.com','$2b$10$cP5k/6ukAbFJYrmKAuvbD.Du7um6tQWXTfAifhjoBwTMHBkdS80Oe','2023-03-20 16:30:26.616-06','customer'),
+(14,'Msolis','Msolis@gmail.com','$2b$10$..rN0.kSOQrqcwFI86ug4uZYI9ome82DhA0TEGZ53/nDqx6JZUJ2q','2023-03-20 16:31:15.882-06','customer'),
+(15,'Fardon','Fardon@gmail.com','$2b$10$KDjS0KPON8Ag5eY1x8vpM.j0nBwW0aljHVz.B0b2IR9EC7MjoL67u','2023-03-20 16:32:11.804-06','customer'),
+(16,'Kroldan','Kroldan@gmail.com','$2b$10$OKMmEtpVt0l.7Hr2ocjyp.uiWMBXZOSV0ZrxoyQecob9LagZXCH6e','2023-03-20 16:32:56.597-06','customer'),
+(17,'test','test@hotmail.com','$2b$10$01gwkXA8DWtk4q3HcmFWQOSf2RZHdSsyRcMcP2U/vdJmxuNp2/2fi','2023-03-22 16:31:00.965-06','admin'),
+(18,'JMartin','JMartin@hotmail.com','$2b$10$xR/soLRWirYZ67N4Rx6yJuzGpfVYPkhFOVN7hoYrM8jSOgpmW/gHa','2023-03-22 16:34:26.949-06','admin');
