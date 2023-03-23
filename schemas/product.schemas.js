@@ -18,7 +18,7 @@ function validate(validation, property) {
 
 function createProductValidation(data) {
   const schema = yup.object().shape({
-    product: yup
+    name: yup
       .string()
       .min(3, errors.productMin)
       .matches(regexProduct, errors.productRegex)
