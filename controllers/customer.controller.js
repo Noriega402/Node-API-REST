@@ -55,7 +55,6 @@ controller.new = async (request, response, next) => {
                 id: user.id,
                 username: user.username,
                 email: user.email,
-                password: user.password,
                 role: user.role,
                 createdAt: user.createdAt,
             },
