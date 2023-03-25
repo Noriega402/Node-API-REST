@@ -1,33 +1,23 @@
 const path = require('path');
-let data = require('../examples/products.json');
+const { Product } = require('../db/models/product.model');
+const { models } = require('../libs/sequelize');
 const controller = {};
 
-controller.getAll = (request, response) => {
-  const { size } = request.query;
-  const getProducts = [];
-  const limit = size || 10; //en caso no pasa un valor, se le asigna 10
-  if(size){
-    for(let i = 0; i < limit; i++){
-      getProducts.push({
-        id: data[i].id,
-        product: data[i].product,
-        price: data[i].price,
-        description: data[i].description,
-      });
-    }
+controller.getAll = async (request, response) => {
+  const products = await models.Product.findAll({
+    attributes: { exclude: ['category_id'] },
+    include: ['category']
+  });
 
-    response.json(getProducts);
-  }else{
-    response.json(data);
-  }
+  response.json(products);
 }
 
 controller.getPagination = (request, response, next) => {
   const { size } = request.query;
   const getProducts = [];
   const limit = size || 10; //en caso no pasa un valor, se le asigna 10
-  if(limit){
-    for(let i = 0; i < limit; i++){
+  if (limit) {
+    for (let i = 0; i < limit; i++) {
       getProducts.push({
         id: data[i].id,
         product: data[i].product,
@@ -37,60 +27,78 @@ controller.getPagination = (request, response, next) => {
     }
 
     response.json(getProducts);
-  }else{
+  } else {
     response.json(data);
   }
 }
 
-controller.find = (request, response) => { //recibe parametros
-  const id = Number(request.params.id);
-  const search = data.find(product => product.id == id);
+controller.find = async (request, response, next) => { //recibe parametros
+  try {
+    const id = Number(request.params.id);
+    const findProduct = await models.Product.findByPk(id, {
+      attributes: { exclude: ['category_id'] },
+      include: ['category'],
+    });
 
-  search
-    ? response.json(search)
-    : response.status(404).sendFile(path.join(__dirname,'../public/404.html'))
-}
-
-controller.new = (request, response) => {
-  const body = request.body;
-  const ids = data.map(datos => datos.id); //obtener los ids de los productos
-  const maxId = Math.max(...ids); // verificar el id mayor
-
-  const newProduct = {
-    id: maxId + 1,
-    products: body.products,
-    price: body.price,
-    description: body.description,
-    image: body.image
-  }
-
-  data = [...data, newProduct];
-  response.status(202).json(newProduct).end();
-}
-
-controller.delete = (request, response) => {
-  const id = Number(request.params.id);
-  const index = data.findIndex(item => item.id === id);
-  // console.log(data[index]);
-  if(index !== -1){
-    data.splice(index, 1);
-    response.status(200).json({message: "Deleted successfully!"}).end(); //mostrar producto eliminado
-  }else{
-    response.status(404).json({message: "Bad request"}).end();
+    if (!findProduct) response.json({ statusCode: 404, message: "Not found", description: "Product not found" });
+    else response.json(findProduct);
+  } catch (error) {
+    next(error)
   }
 }
 
-controller.update= (request, response) => {
+controller.create = async (request, response) => {
+  try {
+    const body = request.body;
+    const newProduct = await models.Product.create(body)
+
+    const product = await models.Product.findByPk(newProduct.id, {
+      attributes: { exclude: ['category_id'] }
+    });
+    const category = await models.Category.findByPk(product.categoryId);
+    const res = {
+      ...product.dataValues,
+      category: {
+        ...category.dataValues
+      }
+    }
+    response.json(res);
+  } catch (error) {
+    next(error);
+  }
+}
+
+controller.delete = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const find = await models.Product.findByPk(id);
+
+    if (!find) {
+      response.json({ statusCode: 404, message: "Not found", description: "Product not found..." })
+    } else {
+      const deleted = await find.destroy();
+      response.json({ message: "Successfully Deleted", description: "Product deleted" });
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+controller.update = async (request, response, next) => {
   const id = Number(request.params.id);
   const body = request.body;
-  const index = data.findIndex(item => item.id === id);
-  // console.log(body);
-  if(index !== -1){
-    const product = data[index];
-    data[index] = { ...product, ...body };
-    response.status(202).json({message: "Updated succesfully!"}).end();
-  }else{
-    response.status(406).json({error: "Bad request"}).end();
+  const updated = await Product.update(body, {
+    where: { id: id },
+  })
+
+  if (updated == 0) {//error al actualizar
+    response.json({ statusCode: 404, message: "Not found", description: "Product not found..." })
+  } else {
+    const find = await models.Product.findByPk(id, {
+      attributes: { exclude: ['category_id'] },
+      include: ['category'],
+    });
+    response.json(find);
   }
 }
 

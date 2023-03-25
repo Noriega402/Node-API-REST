@@ -1,26 +1,40 @@
 const path = require('path');
+const flatted = require('flatted');
 const { models } = require('../libs/sequelize');
 const bcrypt = require('bcrypt');
+const sequelize = require('../libs/sequelize');
 const controller = {};
 
 controller.getAll = async (request, response, next) => {
     const customers = await models.Customer.findAll({
-        include: ['user'] //alias de tabla users
+        include: ['user'],
+    })
+    customers.forEach(customer => {
+        delete customer.user.dataValues.password;
     });
+    // console.log(customers);
     response.json(customers);
+
 }
 
 controller.find = async (request, response, next) => {
     const id = Number(request.params.id);
-    const find = await models.Customer.findByPk(id);
-    if (!find) return response.status(404).json({ statusCode: 404, error: "Not Found", description: "Customer not found" })
-    else return response.status(200).json(find);
+    const find = await models.Customer.findByPk(id, {
+        include: ['user'],
+        attributes: { exclude: ['password'] },
+    });
+    if (!find){
+        return response.status(404).json({ statusCode: 404, error: "Not Found", description: "Customer not found" })
+    }else{
+        delete find.user.dataValues.password; //eliminar password de consulta
+        return response.status(200).json(find);
+    }
 }
 
 controller.new = async (request, response, next) => {
     try {
         const body = request.body;
-        const { username, email ,password, role} = request.body.user;
+        const { username, email, password, role } = request.body.user;
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 

@@ -1,6 +1,5 @@
 const { models } = require('../libs/sequelize');
 const sequelize = require('../libs/sequelize');
-let data = require('../examples/users.json');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const controller = {};
@@ -19,20 +18,20 @@ controller.getTasks = async (request, response) => {
 
 
 controller.getUsers = async (request, response, next) => { //recibe querys
-  const { size } = request.query;
-  const datos = [];
-  const limit = size || 10;
-
-  const rows = await models.User.findAll({
+  const users = await models.User.findAll({
     include: ['customer'], // traer datos asociados de customers
+    attributes: { exclude: ['password'] }, //para no mostrar algun campo de la DB
   });
-  return response.json(rows);
+
+  return response.json(users);
 }
 
 controller.findUser = async (request, response, next) => {
   const id = Number(request.params.id);
 
-  const find = await models.User.findByPk(id);
+  const find = await models.User.findByPk(id, {
+    attributes: { exclude: ['password'] }
+  });
   if (!find) {
     return response.json({ error: "Not Found", description: "User don´t exist in DB" })
   } else {
@@ -40,7 +39,7 @@ controller.findUser = async (request, response, next) => {
   }
 }
 
-controller.newUser = async (request, response, next) => {
+controller.create = async (request, response, next) => {
   try {
     const body = request.body
     const role = request.body.role;
@@ -71,11 +70,11 @@ controller.deleteUser = async (request, response) => {
   const id = Number(request.params.id);
   const find = await models.User.findByPk(id);
   if (!find) {
-    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+    response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+  }else{
+    const deleted = await find.destroy();
+    response.json({message: "Successfully deleted", description: "User successfully deleted"});
   }
-  const deleted = await find.destroy();
-
-  return response.json(find);
 }
 
 controller.update = async (request, response) => {
