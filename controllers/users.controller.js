@@ -30,6 +30,7 @@ controller.findUser = async (request, response, next) => {
   const id = Number(request.params.id);
 
   const find = await models.User.findByPk(id, {
+    include: ['customer'],
     attributes: { exclude: ['password'] }
   });
   if (!find) {
