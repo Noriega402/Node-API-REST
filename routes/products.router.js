@@ -9,7 +9,7 @@ router.get('/:id', controller.find);
 
   router.post('/',
   validations.validate(validations.createProductValidation, "body"),
-  controller.new);
+  controller.create);
 
   router.patch('/:id',
   validations.validate(validations.updateProductValidation, "body"),

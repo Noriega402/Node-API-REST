@@ -46,7 +46,7 @@ const CustomerSchema = {
 
 class Customer extends Model {
     static associate(models) {
-        this.belongsTo(models.User, { as: 'user' }) //realacion de tablas
+        this.belongsTo(models.User, { as: 'user' }) //realacion de tablas uno a uno
     }
 
     static config(sequelize) {

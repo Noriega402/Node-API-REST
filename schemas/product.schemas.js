@@ -18,23 +18,18 @@ function validate(validation, property) {
 
 function createProductValidation(data) {
   const schema = yup.object().shape({
-    name: yup
-      .string()
-      .min(3, errors.productMin)
-      .matches(regexProduct, errors.productRegex)
-      .required(errors.required),
-    price: yup
-      .string()
-      .matches(regexPrice, errors.productPrice)
-      .required(),
-    description: yup
-      .string()
-      .min(10, errors.productDescription)
-      .required(errors.required),
-    image: yup
-    .string()
+    name: yup.string()
+    .min(3, errors.productMin)
+    .matches(regexProduct, errors.productRegex)
+    .required(errors.required),
+    price: yup.number().positive().required(),
+    description: yup.string()
+    .min(10, errors.productDescription)
+    .required(errors.required),
+    image: yup.string()
     .url()
     .required(errors.required),
+    categoryId: yup.number().integer().required(),
   });
 
   schema.validateSync(data);
@@ -42,16 +37,12 @@ function createProductValidation(data) {
 
 function updateProductValidation(data, property) {
   const schema = yup.object().shape({
-    product: yup
-      .string()
-      .min(3, errors.productMin)
-      .matches(regexProduct, errors.productRegex),
-    price: yup
-      .string()
-      .matches(regexPrice, errors.productPrice),
-    description: yup
-      .string()
-      .min(10, errors.productDescription),
+    product: yup.string()
+    .min(3, errors.productMin)
+    .matches(regexProduct, errors.productRegex),
+    price: yup.number().positive(),
+    description: yup.string().min(10, errors.productDescription),
+    categoryId: yup.number().integer(),
   });
 
   schema.validateSync(data);
@@ -59,10 +50,7 @@ function updateProductValidation(data, property) {
 
 function deleteProductValidation(data, property) {
   const schema = yup.object().shape({
-    id: yup
-      .number(errors.number)
-      .integer(errors.integer)
-      .required(errors.required),
+    id: yup.number(errors.number).integer(errors.integer).required(errors.required),
   });
 
   schema.validateSync(data);

@@ -15,7 +15,7 @@ function validate(validation, property){
 
 function createCategoryValidation(data){
     const schema = yup.object().shape({
-        category: yup
+        name: yup
         .string()
         .required(errors.required),
     });
@@ -24,7 +24,7 @@ function createCategoryValidation(data){
 
 function updateCategoryValidation(data, property){
     const schema = yup.object().shape({
-        category: yup
+        name: yup
         .string()
         .required(errors.required),
     });

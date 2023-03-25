@@ -11,7 +11,7 @@ router.get('/:username/:password', controller.compare);
 
 router.post('/',
   validations.validate(validations.createUserValidation, "body"),
-  controller.newUser);
+  controller.create);
 
 router.delete('/:id',
   validations.validate(validations.deleteUserValidation, "params"),

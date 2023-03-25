@@ -23,7 +23,7 @@ const UserSchema = {
     },
     password: {
         allowNull: false,
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
     },
     role: {
         allowNull: false,
@@ -47,12 +47,15 @@ class User extends Model {
         });
     }
 
-    static config(sequelize){
+    static config(sequelize) {
         return {
             sequelize,
             tableName: USER_TABLE,
             modelName: 'User',
             timestamps: false,
+            attributes: {
+                exclude: ['password'],
+            },
         }
     }
 }

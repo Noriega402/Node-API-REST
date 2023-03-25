@@ -13,12 +13,18 @@ const CategorySchema = {
         allowNull: false,
         type: DataTypes.STRING,
         unique: true,
+    },
+    createdAt: {
+        field: 'created_at',
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
     }
 };
 
 class Category extends Model{
     static associate(models){
-        this.hasMany(models.Product, {
+        this.hasMany(models.Product, { //relacion de uno a muchos
             as: 'products',
             foreignKey: 'category_id',
         })
