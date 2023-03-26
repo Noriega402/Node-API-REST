@@ -3,32 +3,40 @@ const { Product } = require('../db/models/product.model');
 const { models } = require('../libs/sequelize');
 const controller = {};
 
-controller.getAll = async (request, response) => {
-  const products = await models.Product.findAll({
-    attributes: { exclude: ['category_id'] },
-    include: ['category']
-  });
+controller.getAll = async (request, response, next) => {
+  try {
+    const products = await models.Product.findAll({
+      attributes: { exclude: ['category_id'] },
+      include: ['category']
+    });
 
-  response.json(products);
+    response.json(products);
+  } catch (error) {
+    next(error);
+  }
 }
 
 controller.getPagination = (request, response, next) => {
-  const { size } = request.query;
-  const getProducts = [];
-  const limit = size || 10; //en caso no pasa un valor, se le asigna 10
-  if (limit) {
-    for (let i = 0; i < limit; i++) {
-      getProducts.push({
-        id: data[i].id,
-        product: data[i].product,
-        price: data[i].price,
-        description: data[i].description,
-      });
-    }
+  try {
+    const { size } = request.query;
+    const getProducts = [];
+    const limit = size || 10; //en caso no pasa un valor, se le asigna 10
+    if (limit) {
+      for (let i = 0; i < limit; i++) {
+        getProducts.push({
+          id: data[i].id,
+          product: data[i].product,
+          price: data[i].price,
+          description: data[i].description,
+        });
+      }
 
-    response.json(getProducts);
-  } else {
-    response.json(data);
+      response.json(getProducts);
+    } else {
+      response.json(data);
+    }
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -47,7 +55,7 @@ controller.find = async (request, response, next) => { //recibe parametros
   }
 }
 
-controller.create = async (request, response) => {
+controller.create = async (request, response, next) => {
   try {
     const body = request.body;
     const newProduct = await models.Product.create(body)
@@ -85,20 +93,24 @@ controller.delete = async (request, response, next) => {
 }
 
 controller.update = async (request, response, next) => {
-  const id = Number(request.params.id);
-  const body = request.body;
-  const updated = await Product.update(body, {
-    where: { id: id },
-  })
+  try {
+    const id = Number(request.params.id);
+    const body = request.body;
+    const updated = await Product.update(body, {
+      where: { id: id },
+    })
 
-  if (updated == 0) {//error al actualizar
-    response.json({ statusCode: 404, message: "Not found", description: "Product not found..." })
-  } else {
-    const find = await models.Product.findByPk(id, {
-      attributes: { exclude: ['category_id'] },
-      include: ['category'],
-    });
-    response.json(find);
+    if (updated == 0) {//error al actualizar
+      response.json({ statusCode: 404, message: "Not found", description: "Product not found..." })
+    } else {
+      const find = await models.Product.findByPk(id, {
+        attributes: { exclude: ['category_id'] },
+        include: ['category'],
+      });
+      response.json(find);
+    }
+  } catch (error) {
+    next(error);
   }
 }
 

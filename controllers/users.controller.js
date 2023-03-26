@@ -18,25 +18,33 @@ controller.getTasks = async (request, response) => {
 
 
 controller.getUsers = async (request, response, next) => { //recibe querys
-  const users = await models.User.findAll({
-    include: ['customer'], // traer datos asociados de customers
-    attributes: { exclude: ['password'] }, //para no mostrar algun campo de la DB
-  });
+  try {
+    const users = await models.User.findAll({
+      include: ['customer'], // traer datos asociados de customers
+      attributes: { exclude: ['password'] }, //para no mostrar algun campo de la DB
+    });
 
-  return response.json(users);
+    return response.json(users);
+  } catch (error) {
+    next(error);
+  }
 }
 
 controller.findUser = async (request, response, next) => {
-  const id = Number(request.params.id);
+  try {
+    const id = Number(request.params.id);
+    const find = await models.User.findByPk(id, {
+      include: ['customer'],
+      attributes: { exclude: ['password'] }
+    });
 
-  const find = await models.User.findByPk(id, {
-    include: ['customer'],
-    attributes: { exclude: ['password'] }
-  });
-  if (!find) {
-    return response.json({ error: "Not Found", description: "User don´t exist in DB" })
-  } else {
-    return response.json(find);
+    if (!find) {
+      return response.json({ error: "Not Found", description: "User don´t exist in DB" })
+    } else {
+      return response.json(find);
+    }
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -67,48 +75,56 @@ controller.create = async (request, response, next) => {
   }
 }
 
-controller.deleteUser = async (request, response) => {
-  const id = Number(request.params.id);
-  const find = await models.User.findByPk(id);
-  if (!find) {
-    response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
-  }else{
-    const deleted = await find.destroy();
-    response.json({message: "Successfully deleted", description: "User successfully deleted"});
+controller.deleteUser = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const find = await models.User.findByPk(id);
+    if (!find) {
+      response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+    } else {
+      const deleted = await find.destroy();
+      response.json({ message: "Successfully deleted", description: "User successfully deleted" });
+    }
+  } catch (error) {
+    next(error);
   }
 }
 
-controller.update = async (request, response) => {
-  const id = Number(request.params.id);
-  const body = request.body;
-  let userUpdate = {
-    username: body.user_name,
-    email: body.email,
-  };
-
-  if (body.password !== undefined) {
-    const passHash = await bcrypt.hash(body.password, 10);
-    userUpdate = {
+controller.update = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const body = request.body;
+    let userUpdate = {
       username: body.user_name,
       email: body.email,
-      password: passHash,
+    };
+
+    if (body.password !== undefined) {
+      const passHash = await bcrypt.hash(body.password, 10);
+      userUpdate = {
+        username: body.user_name,
+        email: body.email,
+        password: passHash,
+      }
     }
-  }
 
-  if (body.role !== undefined) {
-    userUpdate = {
-      ...userUpdate,
-      role: body.role,
+    if (body.role !== undefined) {
+      userUpdate = {
+        ...userUpdate,
+        role: body.role,
+      }
     }
-  }
 
-  const user = await models.User.findByPk(id);
-  if (!user) {
-    return response.status(404).json({ statusCode: 404, error: "Not Found", message: "User not found" });
-  }
+    const user = await models.User.findByPk(id);
+    if (!user) {
+      return response.status(404).json({ statusCode: 404, error: "Not Found", message: "User not found" });
+    }
 
-  const updated = await user.update(userUpdate);
-  return response.json(updated);
+    const updated = await user.update(userUpdate);
+    return response.json(updated);
+  } catch (error) {
+    next(error);
+  }
 }
 
 controller.compare = async (request, response) => {

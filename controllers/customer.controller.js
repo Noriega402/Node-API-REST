@@ -6,28 +6,36 @@ const sequelize = require('../libs/sequelize');
 const controller = {};
 
 controller.getAll = async (request, response, next) => {
-    const customers = await models.Customer.findAll({
-        include: ['user'],
-    })
-    customers.forEach(customer => {
-        delete customer.user.dataValues.password;
-    });
-    // console.log(customers);
-    response.json(customers);
+    try {
+        const customers = await models.Customer.findAll({
+            include: ['user'],
+        })
+        customers.forEach(customer => {
+            delete customer.user.dataValues.password;
+        });
+        // console.log(customers);
+        response.json(customers);
+    } catch (error) {
+        next(error);
+    }
 
 }
 
 controller.find = async (request, response, next) => {
-    const id = Number(request.params.id);
-    const find = await models.Customer.findByPk(id, {
-        include: ['user'],
-        attributes: { exclude: ['password'] },
-    });
-    if (!find){
-        return response.status(404).json({ statusCode: 404, error: "Not Found", description: "Customer not found" })
-    }else{
-        delete find.user.dataValues.password; //eliminar password de consulta
-        return response.status(200).json(find);
+    try {
+        const id = Number(request.params.id);
+        const find = await models.Customer.findByPk(id, {
+            include: ['user'],
+            attributes: { exclude: ['password'] },
+        });
+        if (!find) {
+            return response.status(404).json({ statusCode: 404, error: "Not Found", description: "Customer not found" })
+        } else {
+            delete find.user.dataValues.password; //eliminar password de consulta
+            return response.status(200).json(find);
+        }
+    } catch (error) {
+        next(error)
     }
 }
 
@@ -100,14 +108,18 @@ controller.update = async (request, response, next) => {
 }
 
 controller.delete = async (request, response, next) => {
-    const id = Number(request.params.id);
-    const find = await models.Customer.findByPk(id);
-    if (!find) {
-        return response.status(404).json({ statusCode: 404, error: "Not Found", description: "Customer not found" });
-    }
+    try {
+        const id = Number(request.params.id);
+        const find = await models.Customer.findByPk(id);
+        if (!find) {
+            return response.status(404).json({ statusCode: 404, error: "Not Found", description: "Customer not found" });
+        }
 
-    const deleted = await find.destroy();
-    response.status(200).json(deleted);
+        const deleted = await find.destroy();
+        response.status(200).json(deleted);
+    } catch (error) {
+        next(error);
+    }
 }
 
 
