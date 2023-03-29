@@ -28,7 +28,7 @@ async function createUserValidation(data) {
       .required(errors.required),
     email: yup
       .string()
-      .matches(regexMail, errors.emailRegex)
+      .email()
       .required(errors.required),
     password: yup
       .string()

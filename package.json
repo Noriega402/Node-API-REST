@@ -9,13 +9,22 @@
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migrations:run": "sequelize-cli db:migrate",
     "migrations:revert": "sequelize-cli db:migrate:undo",
-    "migrations:delete": "sequelize-cli db:migrate:undo:all"
+    "migrations:delete": "sequelize-cli db:migrate:undo:all",
+    "seeders:generate": "sequelize-cli seed:generate --name",
+    "seeders:run-all": "sequelize-cli db:seed:all",
+    "seeders:run-delete": "sequelize-cli db:seed:undo",
+    "seeders:run-name": "sequelize-cli db:seed:undo --seed"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Noriega402/Node-API-REST.git"
   },
-  "keywords": ["NodeJS","postgreSQL", "sequelize", "express"],
+  "keywords": [
+    "NodeJS",
+    "postgreSQL",
+    "sequelize",
+    "express"
+  ],
   "author": "Daniel Noriega",
   "license": "MIT",
   "bugs": {
@@ -28,7 +37,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.3",
     "nodemon": "^2.0.22",
-    "sequelize-cli": "^6.6.0"
+    "sequelize-cli": "^6.6.0",
+    "mysql2": "^3.2.0"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -36,7 +46,6 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "faker": "5.5.3",
-    "mysql2": "^3.2.0",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.29.3",

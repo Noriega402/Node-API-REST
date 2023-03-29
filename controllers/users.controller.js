@@ -1,6 +1,5 @@
 const { models } = require('../libs/sequelize');
 const sequelize = require('../libs/sequelize');
-let data = require('../examples/users.json');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const controller = {};
@@ -19,28 +18,37 @@ controller.getTasks = async (request, response) => {
 
 
 controller.getUsers = async (request, response, next) => { //recibe querys
-  const { size } = request.query;
-  const datos = [];
-  const limit = size || 10;
+  try {
+    const users = await models.User.findAll({
+      include: ['customer'], // traer datos asociados de customers
+      attributes: { exclude: ['password'] }, //para no mostrar algun campo de la DB
+    });
 
-  const rows = await models.User.findAll({
-    include: ['customer'], // traer datos asociados de customers
-  });
-  return response.json(rows);
-}
-
-controller.findUser = async (request, response, next) => {
-  const id = Number(request.params.id);
-
-  const find = await models.User.findByPk(id);
-  if (!find) {
-    return response.json({ error: "Not Found", description: "User don´t exist in DB" })
-  } else {
-    return response.json(find);
+    return response.json(users);
+  } catch (error) {
+    next(error);
   }
 }
 
-controller.newUser = async (request, response, next) => {
+controller.findUser = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const find = await models.User.findByPk(id, {
+      include: ['customer'],
+      attributes: { exclude: ['password'] }
+    });
+
+    if (!find) {
+      return response.json({ error: "Not Found", description: "User don´t exist in DB" })
+    } else {
+      return response.json(find);
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+controller.create = async (request, response, next) => {
   try {
     const body = request.body
     const role = request.body.role;
@@ -67,48 +75,56 @@ controller.newUser = async (request, response, next) => {
   }
 }
 
-controller.deleteUser = async (request, response) => {
-  const id = Number(request.params.id);
-  const find = await models.User.findByPk(id);
-  if (!find) {
-    return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+controller.deleteUser = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const find = await models.User.findByPk(id);
+    if (!find) {
+      response.status(404).json({ statusCode: 404, error: "Not Found", "message": "User not found" });
+    } else {
+      const deleted = await find.destroy();
+      response.json({ message: "Successfully deleted", description: "User successfully deleted" });
+    }
+  } catch (error) {
+    next(error);
   }
-  const deleted = await find.destroy();
-
-  return response.json(find);
 }
 
-controller.update = async (request, response) => {
-  const id = Number(request.params.id);
-  const body = request.body;
-  let userUpdate = {
-    username: body.user_name,
-    email: body.email,
-  };
-
-  if (body.password !== undefined) {
-    const passHash = await bcrypt.hash(body.password, 10);
-    userUpdate = {
+controller.update = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const body = request.body;
+    let userUpdate = {
       username: body.user_name,
       email: body.email,
-      password: passHash,
+    };
+
+    if (body.password !== undefined) {
+      const passHash = await bcrypt.hash(body.password, 10);
+      userUpdate = {
+        username: body.user_name,
+        email: body.email,
+        password: passHash,
+      }
     }
-  }
 
-  if (body.role !== undefined) {
-    userUpdate = {
-      ...userUpdate,
-      role: body.role,
+    if (body.role !== undefined) {
+      userUpdate = {
+        ...userUpdate,
+        role: body.role,
+      }
     }
-  }
 
-  const user = await models.User.findByPk(id);
-  if (!user) {
-    return response.status(404).json({ statusCode: 404, error: "Not Found", message: "User not found" });
-  }
+    const user = await models.User.findByPk(id);
+    if (!user) {
+      return response.status(404).json({ statusCode: 404, error: "Not Found", message: "User not found" });
+    }
 
-  const updated = await user.update(userUpdate);
-  return response.json(updated);
+    const updated = await user.update(userUpdate);
+    return response.json(updated);
+  } catch (error) {
+    next(error);
+  }
 }
 
 controller.compare = async (request, response) => {
