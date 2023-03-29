@@ -36,7 +36,8 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.3",
-    "sequelize-cli": "^6.6.0"
+    "sequelize-cli": "^6.6.0",
+    "mysql2": "^3.2.0"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -44,7 +45,6 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "faker": "5.5.3",
-    "mysql2": "^3.2.0",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.29.3",
