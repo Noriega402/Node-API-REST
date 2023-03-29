@@ -19,16 +19,16 @@ function validate(validation, property) {
 function createProductValidation(data) {
   const schema = yup.object().shape({
     name: yup.string()
-    .min(3, errors.productMin)
-    .matches(regexProduct, errors.productRegex)
-    .required(errors.required),
+      .min(3, errors.productMin)
+      .matches(regexProduct, errors.productRegex)
+      .required(errors.required),
     price: yup.number().positive().required(),
     description: yup.string()
-    .min(10, errors.productDescription)
-    .required(errors.required),
+      .min(10, errors.productDescription)
+      .required(errors.required),
     image: yup.string()
-    .url()
-    .required(errors.required),
+      .url()
+      .required(errors.required),
     categoryId: yup.number().integer().required(),
   });
 
@@ -38,8 +38,8 @@ function createProductValidation(data) {
 function updateProductValidation(data, property) {
   const schema = yup.object().shape({
     product: yup.string()
-    .min(3, errors.productMin)
-    .matches(regexProduct, errors.productRegex),
+      .min(3, errors.productMin)
+      .matches(regexProduct, errors.productRegex),
     price: yup.number().positive(),
     description: yup.string().min(10, errors.productDescription),
     categoryId: yup.number().integer(),
@@ -56,9 +56,23 @@ function deleteProductValidation(data, property) {
   schema.validateSync(data);
 }
 
+function querysProduct(data) {
+  const productSchema = yup.object().shape({
+    offset: yup.number().integer(),
+    limit: yup.number().integer(),
+    product: yup.string(),
+    price_min: yup.number().integer(),
+    price_max: yup.number().integer(),
+  });
+
+  productSchema.validateSync(data);
+}
+
+
 module.exports = {
   validate,
   createProductValidation,
   updateProductValidation,
-  deleteProductValidation
+  deleteProductValidation,
+  querysProduct
 };

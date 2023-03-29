@@ -1,15 +1,51 @@
 const path = require('path');
+const { Op } = require('sequelize');
 const { Product } = require('../db/models/product.model');
 const { models } = require('../libs/sequelize');
 const controller = {};
 
 controller.getAll = async (request, response, next) => {
   try {
-    const products = await models.Product.findAll({
+    const { limit, offset, product, price, price_min, price_max } = request.query;
+    const options = {
       attributes: { exclude: ['category_id'] },
       include: ['category']
-    });
+    }
 
+    if (limit) {
+      options.limit = limit;
+    }
+
+    if (offset) {
+      options.offset = offset;
+    }
+
+    if (product) {
+      options.where = {
+        name: {
+          [Op.iLike]: `%${product}%`,
+        }
+      }
+    }
+
+    if(price){
+      parseInt(price);
+      options.where = {
+        price: {
+          [Op.eq]: price,
+        }
+      }
+    }else if(price_min && price_max){
+      parseInt(price_min);
+      parseInt(price_max);
+      options.where = {
+        price: {
+          [Op.between]: [price_min, price_max],
+        }
+      }
+    }
+
+    const products = await models.Product.findAll(options);
     response.json(products);
   } catch (error) {
     next(error);

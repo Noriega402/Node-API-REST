@@ -3,7 +3,7 @@ const router = express.Router();
 const validations = require('../schemas/product.schemas');
 const controller = require('../controllers/products.controller');
 
-router.get('/', controller.getAll);
+router.get('/', validations.validate(validations.querysProduct, "query"), controller.getAll);
 router.get('/pagination', controller.getPagination);
 router.get('/:id', controller.find);
 

@@ -51,6 +51,7 @@ controller.new = async (request, response, next) => {
     try {
         const body = request.body;
         const created = await models.Order.create(body);
+        console.log(created);
         response.json(created);
     } catch (error) {
         next(error);
@@ -61,7 +62,7 @@ controller.addItem = async (request, response, next) => {
     try {
         const body = request.body;
         const newItem = await models.OrderProduct.create(body);
-        const find = await models.Order.findByPk(newItem.id, {
+        const find = await models.Order.findByPk(newItem.orderId, {
             include: [
                 {
                     association: 'customer',
@@ -70,6 +71,8 @@ controller.addItem = async (request, response, next) => {
                 'items'
             ]
         });
+        delete find.dataValues.customer.dataValues.user.dataValues.password;
+        // console.log(find.dataValues.customer.dataValues.user.dataValues.password);
         response.json(find);
     } catch (error) {
         next(error);
