@@ -29,9 +29,10 @@ const OrderSchema = {
     },
     total: { // calcular el valor de los productos (no se almacena dentro de la BD)
         type: DataTypes.VIRTUAL,
-        get(){
-            if(this.items.length > 0){
-                return this.items.reduce((total, item) => {
+        get() {
+            const items = this.getDataValue('items') || []; // asegura que items siempre es un arreglo
+            if(items.length > 0){
+                return items.reduce((total, item) => {
                     return total + (item.price * item.OrderProduct.quantity);
                 }, 0);
             }
