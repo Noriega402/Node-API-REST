@@ -2,6 +2,9 @@ const { models } = require('../libs/sequelize');
 const sequelize = require('../libs/sequelize');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const { User } = require('../db/models/user.model');
+const signToken = require('../utils/jwt/token.sign');
+const { config } = require('../config/config');
 const controller = {};
 
 /**
@@ -42,6 +45,35 @@ controller.findUser = async (request, response, next) => {
       return response.json({ error: "Not Found", description: "User don´t exist in DB" })
     } else {
       return response.json(find);
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+controller.findByEmail = async (request, response, next) => {
+  try {
+    // console.log(request.body);
+    const body = request.body;
+    if (body.message) {
+      response.json(body);
+    } else {
+      const find = await models.User.findOne({
+        where: {
+          email: body.email
+        }
+      });
+
+      if (!find) {
+        response.json({ message: "No se encontro el usuario :(" });
+      } else {
+        const token = signToken(find, config.jwtSecret); //validar token
+        delete find.dataValues.password;
+        response.json({
+          find,
+          token
+        });
+      }
     }
   } catch (error) {
     next(error);
