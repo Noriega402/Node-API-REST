@@ -51,34 +51,36 @@ controller.findUser = async (request, response, next) => {
   }
 }
 
-controller.findByEmail = async (request, response, next) => {
-  try {
-    // console.log(request.body);
-    const body = request.body;
-    if (body.message) {
-      response.json(body);
-    } else {
-      const find = await models.User.findOne({
-        where: {
-          email: body.email
-        }
-      });
+// controller.findByEmail = async (request, response, next) => {
+//   try {
+//     // console.log(request.body);
+//     const body = request.body;
+//     if (body.message) {
+//       response.json(body);
+//     } else {
 
-      if (!find) {
-        response.json({ message: "No se encontro el usuario :(" });
-      } else {
-        const token = signToken(find, config.jwtSecret); //validar token
-        delete find.dataValues.password;
-        response.json({
-          find,
-          token
-        });
-      }
-    }
-  } catch (error) {
-    next(error);
-  }
-}
+//       const find = await models.User.findOne({
+//         where: {
+//           email: body.email
+//         }
+//       });
+
+//       if (!find) {
+//         return response.json({ message: "User not found" });
+//       } else {
+//         const token = signToken(find, config.jwtSecret); //validar token
+//         delete find.dataValues.password;
+//         return response.json({
+//           find,
+//           token
+//         });
+//       }
+
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// }
 
 controller.create = async (request, response, next) => {
   try {

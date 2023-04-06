@@ -14,7 +14,7 @@ const { logErrors, errorHandler, ormErrorHandler } = require('../middlewares/err
 
 function routerApi(app) {
   const router = express.Router();
-  app.use('/api/v1', router);
+  app.use('/api/v3', router);
   router.use('/products', productsRouter);
   router.use('/categories', categorysRouter);
   router.use('/users', usersRouter);

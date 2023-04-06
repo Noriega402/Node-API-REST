@@ -15,7 +15,7 @@ router.get('/:username/:password', controller.compare);
 
 //Verifican que tengan token de autenticacion
 router.post('/',
-  protectedJWT,
+  // protectedJWT,
   validations.validate(validations.createUserValidation, "body"),
   controller.create
 );
