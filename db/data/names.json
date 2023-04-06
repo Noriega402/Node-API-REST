@@ -132,35 +132,43 @@
         "id": 33
     },
     {
-        "nombre": "Edwin Francisco Nunez Ardon",
+        "nombre": "Karla Vanesa Roldan Najarro",
         "id": 34
     },
     {
-        "nombre": "Javier Estuardo Palma Garcia",
+        "nombre": "Edwin Francisco Nunez Ardon",
         "id": 35
     },
     {
-        "nombre": "Roberto Carlos Pirir Arcon",
+        "nombre": "Javier Estuardo Palma Garcia",
         "id": 36
     },
     {
-        "nombre": "Acsa Eunice Pocasangre Morales",
+        "nombre": "Roberto Carlos Pirir Arcon",
         "id": 37
     },
     {
-        "nombre": "Jairo Genaro Quinum Yaxon",
+        "nombre": "Acsa Eunice Pocasangre Morales",
         "id": 38
     },
     {
-        "nombre": "Irvin Roberto Garcia Flores",
+        "nombre": "Jairo Genaro Quinum Yaxon",
         "id": 39
     },
     {
-        "nombre": "Betina Marta Ardiano Marquez",
+        "nombre": "Mynor Rene Solis Jacobo",
         "id": 40
     },
     {
-        "nombre":"Melany Andrea Salazar Cruz",
+        "nombre": "Irvin Roberto Garcia Flores",
         "id": 41
+    },
+    {
+        "nombre": "Betina Marta Ardiano Marquez",
+        "id": 42
+    },
+    {
+        "nombre":"Melany Andrea Salazar Cruz",
+        "id": 43
     }
 ]

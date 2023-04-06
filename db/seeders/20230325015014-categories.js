@@ -60,7 +60,19 @@ module.exports = {
         created_at: faker.date.between('2019-01-01', new Date()),
       },
       {
-        name: "Seafood",
+        name: "Food",
+        created_at: faker.date.between('2019-01-01', new Date()),
+      },
+      {
+        name: "Software",
+        created_at: faker.date.between('2019-01-01', new Date()),
+      },
+      {
+        name: "Baby",
+        created_at: faker.date.between('2019-01-01', new Date()),
+      },
+      {
+        name: "Books",
         created_at: faker.date.between('2019-01-01', new Date()),
       }
     ])

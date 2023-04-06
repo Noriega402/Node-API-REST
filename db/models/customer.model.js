@@ -48,7 +48,7 @@ class Customer extends Model {
     static associate(models) {
         this.belongsTo(models.User, { as: 'user' }) //realacion de tablas uno a uno
         this.hasMany(models.Order, { // relacion de uno a muchos (de customers a orders)
-            as: 'orders',
+            as: 'orders', //alias para tabla de orders
             foreignKey: 'customerId',//customerId es por el nombre en el modelo de orders
         })
     }

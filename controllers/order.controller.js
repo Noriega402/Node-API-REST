@@ -26,6 +26,32 @@ controller.find = async (request, response, next) => {
     }
 }
 
+controller.findByUser = async (request, response, next) => {
+    try {
+        const id = request.user.sub; // obtener ID del token
+
+        const orders = await models.Order.findAll({
+            where: { // consulta compleja
+                '$customer.user.id$': id
+            },
+            include: [
+                {
+                    association: 'customer',
+                    include: ['user'],
+                },
+            ],
+        });
+        // console.log(orders);
+        // response.json(orders);
+        if (!orders) {
+            return response.json({ statusCode: 404, message: "Order not found" });
+        }
+        return response.json(orders);
+    } catch (error) {
+        next(error);
+    }
+}
+
 controller.getAll = async (request, response, next) => {
     try {
         const orders = await models.Order.findAll({
@@ -51,7 +77,7 @@ controller.new = async (request, response, next) => {
     try {
         const body = request.body;
         const created = await models.Order.create(body);
-        console.log(created);
+        // console.log(created);
         response.json(created);
     } catch (error) {
         next(error);

@@ -1,0 +1,322 @@
+[
+  {
+    "id": 1,
+    "name": "Apple 21",
+    "price": 246.9,
+    "description": "Touch ID for secure authentication and Apple Pay.",
+    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SX466_.jpg",
+    "category_id": 8
+  },
+  {
+    "id": 2,
+    "name": "Laptop Lenovo",
+    "price": 383.09,
+    "description": "Memory is 8GB high-bandwidth RAM to smoothly run multiple applications and browser tabs all at once. Hard Drive  is 256GB PCIe Solid State Drive which allows to fast bootup and data transfer.",
+    "image": "https://m.media-amazon.com/images/I/61QGMX0Qy6L.__AC_SY300_SX300_QL70_FMwebp_.jpg",
+    "category_id": 8
+  },
+  {
+    "id": 3,
+    "name": "Laptop Acer",
+    "price": 820,
+    "description": "Internal Specifications: 8GB DDR4 3200MHz Memory (2 DDR4 Slots Total, Maximum 32GB); 512GB NVMe SSD (2 x PCIe M.2 Slots, 1 x 2.5 Hard Drive Bay Available).",
+    "image": "https://m.media-amazon.com/images/I/81lDOtJRTkL._AC_SX425_.jpg",
+    "category_id": 8
+  },
+  {
+    "id": 4,
+    "name": "Samsung Galaxy Tab S6 Lite",
+    "price": 315.06,
+    "description": "Long-lasting Battery: A long-lasting battery lets you stream for up to 13 hours, the included S Pen makes it easier than ever to write notes and personalize photos and videos, all without needing to charge.",
+    "image": "https://m.media-amazon.com/images/I/718B6zl+b6L._AC_SX679_.jpg",
+    "category_id": 8
+  },
+  {
+    "id": 5,
+    "name": "Gaming PC Desktop",
+    "price": 1399.99,
+    "description": "INTEL Core i7 11700F 2.5GHz (4.9GHz Max Boost) CPU Processor | 1TB NVME SSD – Up to 30x Faster Than Traditional HDD | 240mm AIO.",
+    "image": "https://m.media-amazon.com/images/I/81nXl1lR+qL._AC_SX679_.jpg",
+    "category_id": 8
+  },
+  {
+    "id": 6,
+    "name": "PlayStation 5 Console",
+    "price": 499,
+    "description": "Lightning Speed - Harness the power of a custom CPU, GPU, and SSD with Integrated I/O that rewrite the rules of what a PlayStation console can do.",
+    "image": "https://m.media-amazon.com/images/I/51eOztNdCkL._SX522_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 7,
+    "name": "PlayStation PS5 Console God of War Ragnarök Bundle",
+    "price": 509,
+    "description": "Fully optimized for 3D Audio*: Immerse yourself in the unique soundscapes of the Nine Realms as sounds reverberate and echo throughout the environment. Use highly accurate spatial audio to hear enemies approaching from any direction, including above and below you. *3D audio with stereo headphones (analog or USB).",
+    "image": "https://m.media-amazon.com/images/I/61SUJDrCTLL._SX522_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 8,
+    "name": "Nintendo Switch OLED",
+    "price": 320.03,
+    "description": "Model w/ White Joy-Con, 64 GB internal storage - Save games to your system with 64 GB of internal storage.",
+    "image": "https://m.media-amazon.com/images/I/51yJ+OqktYL._SX425_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 9,
+    "name": "Controller for PlayStation 4",
+    "price": 59,
+    "description": "The Dualshock 4 wireless controller can be easily recharged by plugging it into your PlayStation 4 system, even when in rest mode, or with any standard charger using a USB cable (type A to micro B sold separately).",
+    "image": "https://m.media-amazon.com/images/I/61IG46p-yHL._SX522_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 10,
+    "name": "Controller for PlayStation 5",
+    "price": 69,
+    "description": "Built-in microphone and headset jack - Chat with friends online using the built-in microphone or by connecting a headset to the 3.5mm jack. Easily switch voice capture on and off at a moment’s notice with the dedicated mute button. Internet and account for PlayStation Network required.",
+    "image": "https://m.media-amazon.com/images/I/61ypl-HO+WS._SX466_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 11,
+    "name": "Mario Kart 8 Deluxe - Nintendo Switch",
+    "price": 69,
+    "description": "Play locally in up to 4-player multiplayer in 1080p while playing in TV Mode. Every track of the Wii U version, including DLC, makes a glorious return.",
+    "image": "https://m.media-amazon.com/images/I/81mqZx5X1XL._SY445_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 12,
+    "name": "Super Mario Odyssey",
+    "price": 48.82,
+    "description": "Mario embarks on a new journey through the unknown, running and jumping through huge 3D worlds in the first sandbox-style Mario game since Super Mario 64 and Super Mario Sunshine.",
+    "image": "https://m.media-amazon.com/images/I/51c7OsC55kL._SY445_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 13,
+    "name": "Super Smash Bros. Ultimate ",
+    "price": 49.84,
+    "description": "Fight faster and smarter with new and returning techniques, like the perfect shield and directional air dodge.",
+    "image": "https://m.media-amazon.com/images/I/81nrldTkHML._SY445_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 14,
+    "name": "Mario Party Superstars",
+    "price": 49.94,
+    "description": "Bring the party on 5 classic boards from the Nintendo 64 Mario Party games. Show your friends and family who’s boss in 100 minigames from throughout the Mario Party series.",
+    "image": "https://m.media-amazon.com/images/I/51Omqf6AH7L._SY430_SX215_QL70_FMwebp_.jpg",
+    "category_id": 3
+  },
+  {
+    "id": 15,
+    "name": "Premier Protein Shake, Caramel",
+    "price": 29.78,
+    "description": "30g of protein to help curb your hunger, as a mid-day snack or for post workout recovery; includes all essential amino acids.",
+    "image": "https://m.media-amazon.com/images/I/71qWJ94lD2L._AC_SX569_PIbundle-12,TopRight,0,0_SH20_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 16,
+    "name": "Premier Protein Shake, Café Latte",
+    "price": 29.98,
+    "description": "Rise and shine with the luscious creamy coffee flavor and energy from caffeine equal to 1 cup of coffee; Winner of American Masters of Taste Gold Medal.",
+    "image": "https://m.media-amazon.com/images/I/71rLGcDJeaL._AC_SX569_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 17,
+    "name": "Premier Protein Shake, Strawberries",
+    "price": 31.99,
+    "description": "Like the taste of fresh berries and a splash of sweet cream, this strawberry flavored shake will inspire thoughts of sunshine; Winner of American Masters of Taste Gold Medal for SUPERIOR TASTING ready-to-drink protein beverages.",
+    "image": "https://m.media-amazon.com/images/I/71QZxuYTmwL._AC_SX569_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 18,
+    "name": "Lay's Potato Chips Barbecue Pack",
+    "price": 22.14,
+    "description": "40 Pieces Individual size bags for on-the-go snacking.",
+    "image": "https://m.media-amazon.com/images/I/8131oqzv+bL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 19,
+    "name": "Lay's Classic Potato Chips, 1 Ounce",
+    "price": 50.85,
+    "description": "104 Pieces Potatoes, Vegetable Oil (Canola, Corn, Soybean And/Or Sunflower Oil), And Salt.",
+    "image": "https://m.media-amazon.com/images/I/81KGLmJvVSL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 20,
+    "name": "Lay's Sour Cream & Onion Flavored Potato Chips, 1 Ounce",
+    "price": 48.99,
+    "description": "104 Pieces Potatoes, Vegetable Oil, Dextrose, Maltodextrin (Made From Corn), Natural Flavors, Medium Chain Triglycerides, Lactose, And Citric Acid. Contains Milk Ingredients.",
+    "image": "https://m.media-amazon.com/images/I/817lZ60-bzL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 21,
+    "name": "Lay's Classic Potato Chips, 1 Ounce",
+    "price": 15.88,
+    "description": "40 Pieces Individual size bags for on-the-go snacking.",
+    "image": "https://m.media-amazon.com/images/I/81q0u5HDdbL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 22,
+    "name": "Lay's Kettle Cooked Potato Chips Variety Pack",
+    "price": 23.29,
+    "description": "Includes 40 pieces serving bags of your favorite Lay's, Kettle Cooked Potato Chips, 14 bags of Jalapeno flavored kettle cooked chips, 14 bags of Original kettle cooked chips, and 12 bags of Mesquite BBQ flavored kettle cooked chips.",
+    "image": "https://m.media-amazon.com/images/I/81BF8B9vxVL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 23,
+    "name": "Lay's Potato Chip Variety Pack, 1 Ounce",
+    "price": 21.86,
+    "description": "40 pieces pack featuring 10 of each of these Lay's potato chips favorites in 1 oz bags - Classic, Barbecue, Sour Cream and Onion, and Salt and Vinegar. These much loved treats are fun to enjoy at lunch, as an after-school snack, or party refreshment.",
+    "image": "https://m.media-amazon.com/images/I/81mABE1sNhL._SX679_PIbundle-40,TopRight,0,0_AA679SH20_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 24,
+    "name": "Rice A Roni Heat & Eat Rice, Beef",
+    "price": 23.45,
+    "description": "Includes 8 packs and great taste in 90 seconds: squeeze the pouch, tear the top, heat on high, and enjoy.",
+    "image": "https://m.media-amazon.com/images/I/81bAIvaI+KL._SX679_PIbundle-8,TopRight,0,0_AA679SH20_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 25,
+    "name": "Rice A Roni Heat & Eat Rice, Chicken",
+    "price": 22.18,
+    "description": "Includes 8 packs and great taste in 90 seconds: squeeze the pouch, tear the top, heat on high, and enjoy.",
+    "image": "https://m.media-amazon.com/images/I/81JsqxH+LnL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 26,
+    "name": "Rice A Roni Heat & Eat Rice, 2 Flavor Variety Pack",
+    "price": 17.87,
+    "description": "Includes 6 pack and Great taste in 90 seconds: squeeze the pouch, tear the top, heat on high, and enjoy.",
+    "image": "https://m.media-amazon.com/images/I/91yvvB-N3uL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 27,
+    "name": "Pasta Roni Heat & Eat, 2 Flavor Variety Pack",
+    "price": 17.99,
+    "description": "Includes 6 pack of Pasta in creamy parmesan and marinara sauces ready in just 60 seconds.",
+    "image": "https://m.media-amazon.com/images/I/81IHAyNoBkL._SX679_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 28,
+    "name": "Pringles Potato Crisps Chips",
+    "price": 14.84,
+    "description": "Satisfy your snack craving with the irresistible taste of original flavor, cheddar cheese flavor, and sour cream and onion flavor potato crisps; uniquely shaped and seasoned from edge to edge.",
+    "image": "https://m.media-amazon.com/images/I/710vht30mQL._SX569_.jpg",
+    "category_id": 14
+  },
+  {
+    "id": 29,
+    "name": "Sofa with Extra Comfortable Pillow Top BLACK",
+    "price": 517.09,
+    "description": "SUPREME COMFORT -Specially designed with pillow top armrests to provide added comfort, this grey & black leather sofa is a perfect place to relax; It will quickly become your favorite leather couch.",
+    "image": "https://m.media-amazon.com/images/I/8126NdCEjhL._AC_SX425_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 30,
+    "name": "Sofa with Extra Comfortable Pillow Top RED",
+    "price": 535.99,
+    "description": "BUILT TO LAST - Expertly constructed with durable materials, our living room couch is definitely a practical and long-lasting choice for your home furnishings.",
+    "image": "https://m.media-amazon.com/images/I/81Jo1tKp76L._AC_SX425_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 31,
+    "name": "Furinno Simplistic Set of 2 End Table, Espresso/Black",
+    "price": 35.99,
+    "description": "Sold in Set of two; fits in Y our space, fits on your budget.Assembly Required.Material:Engineered Wood.Item Dimensions:15.6'' L x 15.6'' W x 19.6' H",
+    "image": "https://m.media-amazon.com/images/I/41wraSSgVvL._AC_SX425_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 32,
+    "name": "Table Lamp, Satin Steel, Smart Outlet Compatible",
+    "price": 90,
+    "description": "Functional Lamp: Add a functional yet stylish accent to any surface in your home with Adesso Table Lamps. This table light is ideal for nightstands, console tables,side tables or desktop task lighting.",
+    "image": "https://m.media-amazon.com/images/I/41gsTtt2fiL._AC_SX425_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 33,
+    "name": "Acme Furniture Bayram Chair, Grey",
+    "price": 122.45,
+    "description": "Tight back and seat, Full foam seat, Wooden inner frame, Metal legs, Curved armrest",
+    "image": "https://m.media-amazon.com/images/I/91ufsPRqymL._AC_SX425_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 34,
+    "name": "Closet Organizer",
+    "price": 19.99,
+    "description": "Whitmor's Hanging Shoe Shelf neatly stores and organizes 30 pairs of shoes without taking up any additional floor space.        ",
+    "image": "https://m.media-amazon.com/images/I/81rHJL7Z+aL._AC_SY879_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 35,
+    "name": "Organizer Unit for Bedroom, Living Room & Closets",
+    "price": 34.99,
+    "description": "QUALITY CONSTRUCTION- Made of reliable metal frame and durable MDF wooden top; 8 removable and foldable drawers; Easy pull plastic handles help conveniently open and close the drawers; 4 adjustable plastic feet help protect your floor from scratches.",
+    "image": "https://m.media-amazon.com/images/I/91midkQ-gKL._AC_SX425_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 36,
+    "name": "Organizer with Sturdy Fabric Cover",
+    "price": 40.99,
+    "description": "A perfect freestanding closet rack to organize everyday garments or for hanging seasonal clothing.",
+    "image": "https://m.media-amazon.com/images/I/81V1-tx416L._AC_SY879_.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 37,
+    "name": "Nerf Pro Grip Football",
+    "price": 11.99,
+    "description": "DURABLE DESIGN FOR OUTDOOR AND INDOOR PLAY: This durable foam ball is made for outdoor and indoor play, so kids can get up and get active inside or outside.",
+    "image": "https://m.media-amazon.com/images/I/813S8ofhO8L._AC_SX569_.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 38,
+    "name": "Adidas Bag Blue",
+    "price": 34.99,
+    "description": "100% Polyester",
+    "image": "https://m.media-amazon.com/images/I/41+AuMyEi+S._AC_.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 39,
+    "name": "Under Armour Adult Training Socks",
+    "price": 7.99,
+    "description": "78% Cotton, 20% Nylon, 1% Polyester, 1% Spandex",
+    "image": "https://m.media-amazon.com/images/I/41wI1rVXK8L._AC_.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 40,
+    "name": "Tylenol Cold + Flu Severe Day & Night Caplets for Fever",
+    "price": 28.76,
+    "description": "24-count combo pack of Tylenol Cold + Flu Severe Day/Night Caplets for multi-symptom cold and flu symptom relief. From the #1 doctor recommended pain relief brand, the combo pack includes 16 Daytime and 8 Nighttime caplets for relief any time of the day",
+    "image": "https://m.media-amazon.com/images/I/819nM01fydL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "category_id": 7
+  }
+]

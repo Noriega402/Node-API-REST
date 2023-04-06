@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "customer_id": 34,
+        "created_at": "2022-11-04T00:05:58.694Z"
+    },
+    {
+        "id": 2,
+        "customer_id": 26,
+        "created_at": "2023-01-14T01:51:42.570Z"
+    },
+    {
+        "id": 3,
+        "customer_id": 19,
+        "created_at": "2023-03-25T12:02:23.296Z"
+    },
+    {
+        "id": 4,
+        "customer_id": 8,
+        "created_at": "2022-09-05T18:53:00.242Z"
+    },
+    {
+        "id": 5,
+        "customer_id": 6,
+        "created_at": "2023-02-24T09:24:23.252Z"
+    },
+    {
+        "id": 6,
+        "customer_id": 2,
+        "created_at": "2022-08-30T06:46:27.634Z"
+    },
+    {
+        "id": 7,
+        "customer_id": 22,
+        "created_at": "2022-08-28T21:32:27.025Z"
+    },
+    {
+        "id": 8,
+        "customer_id": 1,
+        "created_at": "2022-07-29T06:50:27.859Z"
+    },
+    {
+        "id": 9,
+        "customer_id": 32,
+        "created_at": "2022-06-30T04:16:40.691Z"
+    },
+    {
+        "id": 10,
+        "customer_id": 41,
+        "created_at": "2023-04-02T03:30:53.813Z"
+    }
+]

@@ -38,7 +38,7 @@ module.exports = {
       },
       categoryId: {
         field: 'category_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
           model: CATEGORY_TABLE,

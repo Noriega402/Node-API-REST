@@ -27,16 +27,18 @@ const OrderSchema = {
         type: DataTypes.DATE,
         defaultValue: Sequelize.NOW,
     },
-    total: { // calcular el valor de los productos (no se almacena dentro de la BD)
+    total: { //campo virtual que sumael subtotal de las ordenes
         type: DataTypes.VIRTUAL,
         get() {
-            const items = this.getDataValue('items') || []; // asegura que items siempre es un arreglo
-            if(items.length > 0){
-                return items.reduce((total, item) => {
-                    return total + (item.price * item.OrderProduct.quantity);
-                }, 0);
+            const items = this.getDataValue('items');
+            if(items){
+                if(items.length > 0){
+                    return items.reduce((total, item) => {
+                        return total + (item.price * item.OrderProduct.quantity);
+                    }, 0);
+                }
+                return 0;
             }
-            return 0;
         }
     }
 };
@@ -47,7 +49,7 @@ class Order extends Model{
             as: 'customer',
         });
         this.belongsToMany(models.Product, { //relacion de muchos a muchos
-            as: 'items',
+            as: 'items', // alias de tabla productos
             through: models.OrderProduct, // referencia a la tabla donde hara la relacion muchos a muchos
             foreignKey: 'orderId', //referencia a campo de tabla orderProduct
             otherKey: 'productId', //referencia a campo de tabla orderProduct

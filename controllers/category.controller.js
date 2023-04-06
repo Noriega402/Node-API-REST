@@ -15,7 +15,8 @@ controller.find = async (request, response, next) => {
         const category = await models.Category.findByPk(id, {
             include: ['products'],
         });
-        response.json(category);
+        if(!category) return response.json({statusCode: 404, error: "Not found", message: "Category not found"});
+        return response.json(category);
     } catch (error) {
         next(error);
     }
@@ -53,12 +54,17 @@ controller.update = async (request, response, next) => {
 controller.delete = async (request, response, next) => {
     try {
         const id = Number(request.params.id);
-    const find = await models.Category.findByPk(id);
-    if (!find) {
-        return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "Category not found" });
-    }
-    const deleted = await find.destroy();
-    response.json({ message: "Deleted Successfuly!", description: "Category deleted" });
+        const find = await models.Category.findByPk(id);
+        if (!find) {
+            return response.status(404).json({ statusCode: 404, error: "Not Found", "message": "Category not found" });
+        }
+        const updateProductCategory = await models.Product.update({categoryId: null}, {
+            where:{
+                categoryId: id
+            }
+        })
+        const deleted = await find.destroy();
+        response.json({ message: "Deleted Successfuly!", description: "Category deleted" });
     } catch (error) {
         next(error);
     }

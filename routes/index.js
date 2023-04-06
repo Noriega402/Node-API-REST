@@ -9,6 +9,7 @@ const testRouter = require('./test.router');
 const orderRouter = require('./orders.router');
 const customerRouter = require('./customers.router');
 const authRouter = require('./auth.router');
+const profileRouter = require('./profile.router');
 const { logErrors, errorHandler, ormErrorHandler } = require('../middlewares/error.handler');
 
 function routerApi(app) {
@@ -23,6 +24,7 @@ function routerApi(app) {
   router.use('/test', testRouter);
   router.use('/customers', customerRouter);
   router.use('/auth', authRouter);
+  router.use('/profile', profileRouter);
   app.use(logErrors); // errores comunes
   app.use(ormErrorHandler); //mostrar errores de sequelize ORM -> CRUD
   app.use(errorHandler); // errores de parte del servidor

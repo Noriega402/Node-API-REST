@@ -7,7 +7,7 @@ const signToken = (payload, secret) => {
         sub: payload.id,
         role: payload.role,
         iat: moment().unix(),
-        expiresIn: moment().add(24,'hours') //expiracion en 24 horas
+        expiresIn: moment().add(1,'hour') //expiracion en 20 minutos
     }, secret);
 }
 

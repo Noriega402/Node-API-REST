@@ -1,0 +1,107 @@
+[
+    {
+        "id": 1,
+        "quantity": 1,
+        "product_id": 5,
+        "order_id": 1,
+        "created_at": "2022-11-04T00:05:58.694Z"
+    },
+    {
+        "id": 2,
+        "quantity": 3,
+        "product_id": 19,
+        "order_id": 3,
+        "created_at": "2023-03-25T12:02:23.296Z"
+    },
+    {
+        "id": 3,
+        "quantity": 5,
+        "product_id": 28,
+        "order_id": 2,
+        "created_at": "2023-01-14T01:51:42.570Z"
+    },
+    {
+        "id": 4,
+        "quantity": 1,
+        "product_id": 33,
+        "order_id": 6,
+        "created_at": "2022-08-30T06:46:27.634Z"
+    },
+    {
+        "id": 5,
+        "quantity": 3,
+        "product_id": 34,
+        "order_id": 9,
+        "created_at": "2022-06-30T04:16:40.691Z"
+    },
+    {
+        "id": 6,
+        "quantity": 2,
+        "product_id": 35,
+        "order_id": 4,
+        "created_at": "2022-09-05T18:53:00.242Z"
+    },
+    {
+        "id": 7,
+        "quantity": 7,
+        "product_id": 26,
+        "order_id": 5,
+        "created_at": "2023-02-24T09:24:23.252Z"
+    },
+    {
+        "id": 8,
+        "quantity": 1,
+        "product_id": 13,
+        "order_id": 10,
+        "created_at": "2023-04-02T03:30:53.813Z"
+    },
+    {
+        "id": 9,
+        "quantity": 1,
+        "product_id": 14,
+        "order_id": 8,
+        "created_at": "2022-07-29T06:50:27.859Z"
+    },
+    {
+        "id": 10,
+        "quantity": 2,
+        "product_id": 10,
+        "order_id": 7,
+        "created_at": "2022-08-28T21:32:27.025Z"
+    },
+    {
+        "id": 11,
+        "quantity": 1,
+        "product_id": 8,
+        "order_id": 1,
+        "created_at": "2022-11-04T00:05:58.694Z"
+    },
+    {
+        "id": 12,
+        "quantity": 6,
+        "product_id": 15,
+        "order_id": 2,
+        "created_at": "2023-01-14T01:51:42.570Z"
+    },
+    {
+        "id": 13,
+        "quantity": 2,
+        "product_id": 7,
+        "order_id": 2,
+        "created_at": "2023-01-14T01:51:50.570Z"
+    },
+    {
+        "id": 14,
+        "quantity": 1,
+        "product_id": 2,
+        "order_id": 9,
+        "created_at": "2022-06-30T04:16:40.691Z"
+    },
+    {
+        "id": 15,
+        "quantity": 1,
+        "product_id": 2,
+        "order_id": 10,
+        "created_at": "2023-04-02T03:30:53.813Z"
+    }
+]

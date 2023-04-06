@@ -41,6 +41,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
+      subtotal: {
+        allowNull: false,
+        type: DataTypes.DECIMAL(10,2)
+      },
       createdAt: {
         field: 'created_at',
         allowNull: false,

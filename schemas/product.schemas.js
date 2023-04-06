@@ -29,7 +29,10 @@ function createProductValidation(data) {
     image: yup.string()
       .url()
       .required(errors.required),
-    categoryId: yup.number().integer().required(),
+    categoryId: yup
+      .number(errors.number)
+      .integer(errors.integer)
+      .required(errors.required),
   });
 
   schema.validateSync(data);
@@ -40,9 +43,11 @@ function updateProductValidation(data, property) {
     product: yup.string()
       .min(3, errors.productMin)
       .matches(regexProduct, errors.productRegex),
-    price: yup.number().positive(),
+    price: yup.number(errors.number).positive(),
     description: yup.string().min(10, errors.productDescription),
-    categoryId: yup.number().integer(),
+    categoryId: yup
+      .number(errors.number)
+      .integer(errors.integer)
   });
 
   schema.validateSync(data);

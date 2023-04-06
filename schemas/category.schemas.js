@@ -41,9 +41,17 @@ function deleteCategoryValidation(data){
     schema.validateSync(data);
 }
 
+function isNumber(data){
+    const schema = yup.object().shape({
+        id: yup.number(errors.number).integer(errors.integer).required()
+    })
+    schema.validateSync(data);
+}
+
 module.exports = {
     validate,
     createCategoryValidation,
     deleteCategoryValidation,
-    updateCategoryValidation
+    updateCategoryValidation,
+    isNumber
 }
