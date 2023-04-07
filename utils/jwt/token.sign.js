@@ -7,9 +7,17 @@ const signToken = (payload, secret) => {
         sub: payload.id,
         role: payload.role,
         iat: moment().unix(),
-        expiresIn: moment().add(1,'hour') //expiracion en 20 minutos
+        expiresIn: moment().add(30,'minutes') //expiracion en 30 minutos
     }, secret);
 }
 
+const signTokenRecovery = (payload, secret) => {
+    return jwt.sign({
+        sub: payload,
+        iat: moment().unix(),
+        expiresIn: moment().add(10,'minutes')
+    }, secret)
+}
+
 // const token = signToken(payload, process.env.JWT_TOKEN);
-module.exports = signToken;
+module.exports = { signToken, signTokenRecovery };

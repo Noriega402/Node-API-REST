@@ -29,7 +29,6 @@ controller.find = async (request, response, next) => {
 controller.findByUser = async (request, response, next) => {
     try {
         const id = request.user.sub; // obtener ID del token
-
         const orders = await models.Order.findAll({
             where: { // consulta compleja
                 '$customer.user.id$': id

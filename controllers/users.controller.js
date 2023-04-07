@@ -19,7 +19,6 @@ controller.getTasks = async (request, response) => {
   return response.json(data);
 }
 
-
 controller.getUsers = async (request, response, next) => { //recibe querys
   try {
     const users = await models.User.findAll({
@@ -129,33 +128,43 @@ controller.update = async (request, response, next) => {
     const id = Number(request.params.id);
     const body = request.body;
     let userUpdate = {
-      username: body.user_name,
-      email: body.email,
+      ...body
     };
 
     if (body.password !== undefined) {
       const passHash = await bcrypt.hash(body.password, 10);
       userUpdate = {
-        username: body.user_name,
-        email: body.email,
+        ...body,
         password: passHash,
       }
     }
 
-    if (body.role !== undefined) {
-      userUpdate = {
-        ...userUpdate,
-        role: body.role,
-      }
-    }
-
-    const user = await models.User.findByPk(id);
+    const user = await models.User.findByPk(id); //buscar usuario
     if (!user) {
       return response.status(404).json({ statusCode: 404, error: "Not Found", message: "User not found" });
     }
 
-    const updated = await user.update(userUpdate);
+    const updated = await user.update(userUpdate); //actualizar usuario
+    delete updated.dataValues.password;
     return response.json(updated);
+  } catch (error) {
+    next(error);
+  }
+}
+
+controller.updateRecovery = async (id, data) => { //usado desde el controller de auth
+  try {
+    const user = await models.User.findByPk(id); //buscar usuario
+
+    if (!user) { //si usuario no existe
+      return response.status(404).json({
+        statusCode: 404,
+        error: "Unauthorized",
+        message: "Unauthorized access"
+      });
+    }
+
+    await user.update(data); //actualizar token de usuario
   } catch (error) {
     next(error);
   }
